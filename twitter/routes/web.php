@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +22,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/users', [App\Http\Controllers\UserController::class, 'showAllUsers'])->name('users.index');
+    Route::get('/users/{id}', [App\Http\Controllers\UserController::class, 'findByUserId'])->name('users.show');
+    Route::put('/users/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}', [App\Http\Controllers\UserController::class, 'delete'])->name('users.delete');
+
+    Route::get('/tweets/create', [App\Http\Controllers\TweetController::class, 'create'])->name('tweets.create');
+    Route::post('/tweets', [App\Http\Controllers\TweetController::class, 'store'])->name('tweets.store');
+    Route::get('/tweets', [App\Http\Controllers\TweetController::class, 'index'])->name('tweets.index');
+    Route::get('/tweets/{id}', [App\Http\Controllers\TweetController::class, 'findByTweetId'])->name('tweets.show');
+    Route::post('/tweets/{id}', [App\Http\Controllers\TweetController::class, 'update'])->name('tweets.update');
+});
