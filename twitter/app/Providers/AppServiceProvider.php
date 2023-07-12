@@ -28,8 +28,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(UrlGenerator $url)
     {
-        // $url->forceScheme('https');
-
         /**
          * ログインしているユーザー情報をheader.blade.phpに渡す。
          */
