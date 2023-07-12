@@ -2,7 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Tweet;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Routing\UrlGenerator;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,8 +26,19 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(UrlGenerator $url)
     {
-        //
+        // $url->forceScheme('https');
+
+        /**
+         * ログインしているユーザー情報をheader.blade.phpに渡す。
+         */
+
+        View::composer('components.header', function ($view) {
+            if (Auth::check()) {
+                $user = Auth::user();
+                $view->with('userInfo', $user);
+            }
+        });
     }
 }
