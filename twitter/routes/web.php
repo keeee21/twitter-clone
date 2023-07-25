@@ -13,9 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [App\Http\Controllers\TopController::class, 'index']);
+Route::get('/', [App\Http\Controllers\TopController::class, 'index'])->name('top');
 
 Auth::routes();
 
-
-
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/users/{id}',[App\Http\Controllers\UserController::class, 'findByUserId'])->name('users.findByUserId');
+});
