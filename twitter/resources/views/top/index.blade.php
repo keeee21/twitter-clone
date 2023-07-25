@@ -1,6 +1,11 @@
 @extends('layouts.master')
 @section('title','top')
 
+@auth
+<div>
 @section('content')
-top
+    <a href="{{ route('users.findByUserId', [ 'id' => Auth::id()]) }}">マイページ</a>
 @endsection
+</div>
+@endauth
+
