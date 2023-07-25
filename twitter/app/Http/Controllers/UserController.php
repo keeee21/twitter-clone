@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
@@ -15,10 +16,8 @@ class UserController extends Controller
      * @var [User]
      */
     private $user;
-
-    public function __construct(
-        User $user
-    )
+    
+    public function __construct(User $user)
     {
         $this->user = $user;
     }
