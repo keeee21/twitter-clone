@@ -42,7 +42,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function show($id){
+    public function findByUserId($id){
         return User::findOrFail($id);
     }
 }
