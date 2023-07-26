@@ -30,10 +30,10 @@ class UserController extends Controller
      */
     public function findByUserId(string $id):RedirectResponse|View
     {
-        if((string)Auth::id() !== $id){
+        if(Auth::id() !== (int)$id){
             return redirect()->route('top');
         }
-        $user = $this->user->show($id);
+        $user = $this->user->findByUserId($id);
         return view('user.show',compact('user'));
     }
 }
