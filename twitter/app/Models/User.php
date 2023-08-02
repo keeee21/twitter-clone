@@ -44,5 +44,13 @@ class User extends Authenticatable
 
     public function findByUserId($id){
         return User::findOrFail($id);
+    } 
+
+    public function UpdateUserById($request, $id){
+        $user = User::find($id);
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->save();
+        return User::find($id);    
     }
 }

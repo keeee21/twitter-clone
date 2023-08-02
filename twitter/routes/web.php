@@ -16,7 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [App\Http\Controllers\TopController::class, 'index'])->name('top');
 
 Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/users/{id}',[App\Http\Controllers\UserController::class, 'findByUserId'])->name('users.findByUserId');
+
+    Route::get('/user', [App\Http\Controllers\UserController::class, 'showEdit'])->name('user.showEdit');
+
+    Route::put('/user/{id}/update',[App\Http\Controllers\UserController::class, 'update'])->name('user.update');
 });
