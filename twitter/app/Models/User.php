@@ -50,7 +50,8 @@ class User extends Authenticatable
      * @param string $id
      * @return User
      */
-    public function findByUserId(string $id){
+    public function findByUserId(string $id):User
+    {
         return User::findOrFail($id);
     } 
 
@@ -61,7 +62,9 @@ class User extends Authenticatable
      * @param string $id
      * @return User
      */
-    public function updateUserById(updateUserRequest $request, string $id){
+    public function updateUserById(updateUserRequest $request, string $id):User
+    {
+
         $user = User::find($id);
         $user->name = $request->input('name');
         $user->email = $request->input('email');

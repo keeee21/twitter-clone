@@ -61,7 +61,8 @@ class UserController extends Controller
      * @param string $id
      * @return RedirectResponse
      */
-    public function update(UpdateUserRequest $request, string $id) {
+    public function update(UpdateUserRequest $request, string $id):RedirectResponse
+    {
         $user = $this->user->updateUserById($request,$id);
         return redirect()->route('users.findByUserId',['id' => $id]);
     }
