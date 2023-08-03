@@ -58,13 +58,12 @@ class UserController extends Controller
      *ユーザーが名前とメールアドレスを更新したのち、ユーザー詳細画面に遷移します・
      *
      * @param UpdateUserRequest $request
-     * @param [type] $id
+     * @param string $id
      * @return RedirectResponse
      */
-    public function update(UpdateUserRequest $request,$id) {
-        $user = $this->user->UpdateUserById($request,$id);
-        
-        return redirect()->route('user.showEdit');
+    public function update(UpdateUserRequest $request, string $id) {
+        $user = $this->user->updateUserById($request,$id);
+        return redirect()->route('users.findByUserId',['id' => $id]);
     }
 
 

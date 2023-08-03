@@ -12,15 +12,15 @@
           <th class="text-center">入会日</th>  
         </tr>
         <tr>
-         <td>
+          <td>
             {{ $user->id }}
-         </td>
-         <td>{{ $user->name }}</td>
-         <td>{{ $user->email }}</td>
-         <td>{{ $user->created_at }}</td>
-         <td>
+          </td>
+          <td>{{ $user->name }}</td>
+          <td>{{ $user->email }}</td>
+          <td>{{ $user->created_at }}</td>
+          <td>
           <a href="{{ route('user.showEdit') }}" class='btn btn-light'>編集</a>
-         </td>
+          </td>
         </tr>
     </div>
 </div>

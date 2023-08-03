@@ -25,8 +25,17 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|',
+            'name' => 'required|string|max:50',
             'email' =>'required|email:filter,dns,spoof|max:50',
+        ];
+    }
+
+    public function messages() 
+    {
+        return [
+            'name.required' => '必ず名前は入力してね',
+            'email.required' => '必ずemailは入力してね',
+            'email.email' => 'ダメだよん。有効なemailを入力してね'
         ];
     }
 }

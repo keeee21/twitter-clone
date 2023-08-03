@@ -19,9 +19,12 @@ Auth::routes();
 Auth::routes(['verify' => true]);
 
 Route::group(['middleware' => 'auth'], function () {
+// ユーザー詳細画面
     Route::get('/users/{id}',[App\Http\Controllers\UserController::class, 'findByUserId'])->name('users.findByUserId');
 
+// ユーザー編集画面
     Route::get('/user', [App\Http\Controllers\UserController::class, 'showEdit'])->name('user.showEdit');
 
+// ユーザー情報を更新した、詳細画面
     Route::put('/user/{id}/update',[App\Http\Controllers\UserController::class, 'update'])->name('user.update');
 });
