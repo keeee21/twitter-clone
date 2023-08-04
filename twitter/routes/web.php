@@ -26,5 +26,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/user', [App\Http\Controllers\UserController::class, 'showEdit'])->name('user.showEdit');
 
 // ユーザー情報を更新した、詳細画面
-    Route::put('/user/{id}/update',[App\Http\Controllers\UserController::class, 'update'])->name('user.update');
+    Route::put('/user/{id}/update', [App\Http\Controllers\UserController::class, 'update'])->name('user.update');
+
+// ユーザー一覧画面
+    Route::get('/user/show', [App\Http\Controllers\UserController::class, 'getAll'])->name('user.showUser');
+
 });
