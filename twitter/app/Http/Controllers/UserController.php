@@ -9,9 +9,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\UpdateUserRequest;
 
-
-
-
 class UserController extends Controller
 {
     /**
@@ -38,13 +35,12 @@ class UserController extends Controller
             return redirect()->route('top');
         }
         $user = $this->user->findByUserId($id);
-        
+
         return view('user.show', compact('user'));
     }
 
     /**
      * ユーザー編集画面に遷移します。
-     *
      *
      * @return view
      */
@@ -58,7 +54,7 @@ class UserController extends Controller
      *ユーザー情報更新
      *
      * @param UpdateUserRequest $request
-     * @param string $id
+     * @param string $userId
      * @return RedirectResponse
      */
     public function update(UpdateUserRequest $request, string $userId): RedirectResponse

@@ -36,5 +36,6 @@
                     <a href="{{ route('top') }}">Cancel</a>
                 </form>
             </div>
-    </div>
+        </div>
+</div>
 @endsection

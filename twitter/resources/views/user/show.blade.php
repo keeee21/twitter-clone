@@ -22,9 +22,7 @@
           <a href="{{ route('user.showEdit') }}" class='btn btn-light'>編集</a>
           </td>
         </tr>
+      </table>
     </div>
 </div>
 @endsection
-
-
- 
