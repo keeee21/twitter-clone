@@ -32,14 +32,14 @@ class UserController extends Controller
      * @param string $id
      * @return RedirectResponse|View
      */
-    public function findByUserId(string $id):RedirectResponse|View
+    public function findByUserId(string $id): RedirectResponse|View
     {
         if(Auth::id() !== (int)$id){
             return redirect()->route('top');
         }
         $user = $this->user->findByUserId($id);
         
-        return view('user.show',compact('user'));
+        return view('user.show', compact('user'));
     }
 
     /**
@@ -48,24 +48,25 @@ class UserController extends Controller
      *
      * @return view
      */
-    public function showEdit():view
+    public function showEdit(): view
     {
         $user = auth()->user();
-        return view('user.edit',compact('user'));
+        return view('user.edit', compact('user'));
     }
 
     /**
-     *ユーザーが名前とメールアドレスを更新したのち、ユーザー詳細画面に遷移します・
+     *ユーザー情報更新
      *
      * @param UpdateUserRequest $request
      * @param string $id
      * @return RedirectResponse
      */
-    public function update(UpdateUserRequest $request, string $id):RedirectResponse
+    public function update(UpdateUserRequest $request, string $userId): RedirectResponse
     {
-        $user = $this->user->updateUserById($request,$id);
-        return redirect()->route('users.findByUserId',['id' => $id]);
+        $user = User::find($userId);
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $user->updateUserById($name, $email, $userId);
+        return redirect()->route('users.findByUserId', ['id' => $userId]);
     }
-
-
 }

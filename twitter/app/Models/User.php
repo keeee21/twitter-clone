@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Http\Requests\UpdateUserRequest;
+
 
 
 class User extends Authenticatable
@@ -44,30 +44,31 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
     /**Pathパラメータの'/users/{id}'のIDと一致したレコードのIDを取得
      * 
      *
      * @param string $id
      * @return User
      */
-    public function findByUserId(string $id):User
+    public function findByUserId(string $id): User
     {
         return User::findOrFail($id);
     } 
 
-    /**Pathパラメータの’/user/{id}/update'のIDと一致したレコードのIDを取得
-     * 
+    /**
+     * Pathパラメータの’/user/{id}/update'のIDと一致したレコードのIDを取得
      *
-     * @param UpdateUserRequest $request
-     * @param string $id
+     * @param string $name
+     * @param string $email
+     * @param string $userId
      * @return User
      */
-    public function updateUserById(updateUserRequest $request, string $id):User
+    public function updateUserById(string $name, string $email, string $userId): User
     {
-
-        $user = User::find($id);
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
+        $user = User::find($userId);
+        $user->name = $name;
+        $user->email = $email;
         $user->save();
         return $user;
     }

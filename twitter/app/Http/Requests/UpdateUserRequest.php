@@ -34,8 +34,11 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name.required' => '必ず名前は入力してね',
+            'name.string' => '必ず文字列で入力しようね',
+            'name.max' => '50文字以下にせんかい',
             'email.required' => '必ずemailは入力してね',
-            'email.email' => 'ダメだよん。有効なemailを入力してね'
+            'email.email' => 'ダメだよん。有効なemailを入力してね',
+            'email.max' => '多すぎやろ、50文字が限界やで'
         ];
     }
 }
