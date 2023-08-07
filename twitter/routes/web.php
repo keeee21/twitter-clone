@@ -20,3 +20,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/users', [App\Http\Controllers\UserController::class, 'getAll'])->name('users.getall');
+Route::get('/users/{id}', [App\Http\Controllers\UserController::class, 'findByUserId'])->name('users.show');
+Route::put('/users/{id}', [App\Http\Controllers\UserController::class, 'userUpdate'])->name('users.update');
+Route::delete('/users/{id}', [App\Http\Controllers\UserController::class, 'userDelete'])->name('users.delete');
