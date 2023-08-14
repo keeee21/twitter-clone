@@ -7,6 +7,12 @@
     <!-- 作成フォーム -->
     <h1>ツイート作成</h1>
 
+    @if (session('message'))
+    <div class="alert alert-success">
+        {{ session('message') }}
+    </div>
+@endif
+
     @error('content')
         <div style="color: red;">{{ $message }}</div>
     @enderror
@@ -19,6 +25,7 @@
 
     <br><br>
 
+
     <!-- 一覧表示 -->
     <h2>一覧</h2>
     <ul style="list-style-type: none;">
@@ -29,7 +36,7 @@
                     <a href="{{ route('tweets.edit', $tweet->id) }}">ツイートを編集する</a>
                 @endif
 
-                <!-- 削除フォーム -->
+    <!-- 削除フォーム -->
                 @if(Auth::id() === $tweet->user_id)
                     <form action="{{ route('tweets.destroy', $tweet->id) }}" method="post" onsubmit="return confirm('本当に削除しますか？');">
                         @csrf

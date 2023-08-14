@@ -31,9 +31,9 @@ class TweetRequest extends FormRequest
     public function messages()
     {
         return [
-            'content.required' => 'を入力して下さい。',
+            'content.required' => '文字を一文字以上入力して下さい。',
             'content.max' =>'255文字以下で入力して下さい',
-            // 他のカスタムメッセージもここに追加する
+
         ];
     }
 }

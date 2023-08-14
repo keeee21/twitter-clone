@@ -38,11 +38,7 @@ class TweetController extends Controller
      */
     public function store(TweetRequest $request)
     {
-        $tweet = new Tweet;
-        $tweet->content = $request->content;
-        $tweet->user_id = Auth::id();
-        $tweet->save();
-
+        Tweet::createTweet($request->content, Auth::id());
         return redirect()->route('tweets.index');
     }
 
@@ -93,8 +89,7 @@ class TweetController extends Controller
             return redirect()->route('tweets.index')->withErrors('このツイートを編集する権限を持っていません');
         }
 
-        $tweet->content = $request->content;
-        $tweet->save();
+        $tweet->updateTweet($request->content);
         return redirect()->route('tweets.index')->with('message', 'ツイートの更新に成功しました!');
     }
 
@@ -110,10 +105,10 @@ class TweetController extends Controller
 
         // ユーザーがこのツイートのオーナーであることを確認する
         if (Auth::id() !== $tweet->user_id) {
-            return redirect()->route('tweets.index')->withErrors('このツイートを編集する権限を持っていません');
+            return redirect()->route('tweets.index');
         }
 
         $tweet->delete();
-        return redirect()->route('tweets.index')->with('ツイートが削除されました');
+        return redirect()->route('tweets.index')->with('message', 'ツイートが削除されました');
     }
 }
