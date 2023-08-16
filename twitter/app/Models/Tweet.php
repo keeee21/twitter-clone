@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
+
 
 class Tweet extends Model
 {
@@ -16,7 +19,7 @@ class Tweet extends Model
      *
      * @return Collection
      */
-    public function getTweetAll()
+    public function get():Collection
     {
         return $this->orderBy('created_at', 'desc')->get();
     }
@@ -28,7 +31,7 @@ class Tweet extends Model
      * @param int $userId
      * @return boolean
      */
-    public function createTweetNew($content, $userId)
+    public function create($content, $userId):bool
     {
         $this->content = $content;
         $this->user_id = $userId;
@@ -38,10 +41,10 @@ class Tweet extends Model
     /**
      * ツイートを更新
      *
-     * @param string $content 更新する内容
-     * @return boolean 更新成功可否
+     * @param string $content
+     * @return boolean
      */
-    public function updateTweet($content)
+    public function updateTweet($content):bool
     {
         $this->content = $content;
         return $this->save();
@@ -50,21 +53,21 @@ class Tweet extends Model
     /**
      * ツイートIDによってツイートを取得
      *
-     * @param [int] $tweetId
-     * @return Model
+     * @param int $tweetId
+     * @return　null
      */
-    public function findTweetById($tweetId)
+    public function findTweet($tweetId):null
     {
-        return $this->findOrFail($tweetId);
+        return $this->find($tweetId);
     }
 
     /**
      * ツイートが指定したユーザーによって所有されているかを確認
      *
-     * @param [int] $userId
+     * @param int $userId
      * @return boolean
      */
-    public function isOwnedBy($userId)
+    public function isOwnedBy(int $userId):bool
     {
         return $this->user_id == $userId;
     }
@@ -72,10 +75,10 @@ class Tweet extends Model
     /**
      * ユーザーIDに基づいてツイートを削除
      *
-     * @param [int] $userId
+     * @param int $userId
      * @return boolean
      */
-    public function deleteTweet($userId)
+    public function deleteTweet($userId):bool
     {
         if ($this->user_id !== $userId) {
             return false;
