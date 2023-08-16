@@ -18,7 +18,7 @@ class TweetController extends Controller
      *
      * @return View
      */
-    public function index():View
+    public function index(): View
     {
         $tweet = new Tweet();
         $tweets = $tweet->get();
@@ -69,14 +69,17 @@ class TweetController extends Controller
      */
     public function edit($tweetId): View
     {
-        $tweet = (new Tweet())->findTweet($tweetId);
-        $authId = Auth::id();
-        // ユーザーがこのツイートのオーナーであることを確認する
-        if (!$tweet->isOwnedBy($authId)) {
-            return redirect()->route('tweets.index');
-        }
-        return view('tweets.edit', ['tweet' => $tweet]);
+    $tweetInstance = new Tweet();
+    $tweet = $tweetInstance->findTweet($tweetId);
+    $loginUserId = Auth::id();
+
+    // ユーザーがこのツイートのオーナーであることを確認する
+    if (!$tweet->isOwnedBy($loginUserId)) {
+        return redirect()->route('tweets.index');
     }
+    return view('tweets.edit', ['tweet' => $tweet]);
+}
+
 
     /**
      * 指定したツイートを更新
@@ -85,7 +88,7 @@ class TweetController extends Controller
      * @param  int  $tweetId
      * @return RedirectResponse
      */
-    public function update(TweetRequest $request, $tweetId):RedirectResponse
+    public function update(TweetRequest $request, $tweetId): RedirectResponse
     {
         $tweet = new Tweet();
         $tweet = $tweet->findTweet($tweetId);
@@ -117,4 +120,6 @@ class TweetController extends Controller
 
         return redirect()->route('tweets.index')->with('message', 'ツイートが削除されました');
     }
+
 }
+

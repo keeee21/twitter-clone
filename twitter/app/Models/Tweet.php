@@ -19,7 +19,7 @@ class Tweet extends Model
      *
      * @return Collection
      */
-    public function get():Collection
+    public function get(): Collection
     {
         return $this->orderBy('created_at', 'desc')->get();
     }
@@ -29,13 +29,12 @@ class Tweet extends Model
      *
      * @param string $content
      * @param int $userId
-     * @return boolean
      */
-    public function create($content, $userId):bool
+    public function create($content, $userId)
     {
         $this->content = $content;
         $this->user_id = $userId;
-        return $this->save();
+        $this->save();
     }
 
     /**
@@ -44,7 +43,7 @@ class Tweet extends Model
      * @param string $content
      * @return boolean
      */
-    public function updateTweet($content):bool
+    public function updateTweet($content): bool
     {
         $this->content = $content;
         return $this->save();
@@ -53,10 +52,10 @@ class Tweet extends Model
     /**
      * ツイートIDによってツイートを取得
      *
-     * @param int $tweetId
-     * @return　null
+     * @param int $loginUserId
+     * @return Tweet|null
      */
-    public function findTweet($tweetId):null
+    public function findTweet($tweetId): Tweet|null
     {
         return $this->find($tweetId);
     }
@@ -67,7 +66,7 @@ class Tweet extends Model
      * @param int $userId
      * @return boolean
      */
-    public function isOwnedBy(int $userId):bool
+    public function isOwnedBy(int $userId): bool
     {
         return $this->user_id == $userId;
     }
@@ -78,12 +77,12 @@ class Tweet extends Model
      * @param int $userId
      * @return boolean
      */
-    public function deleteTweet($userId):bool
+    public function deleteTweet($userId)
     {
         if ($this->user_id !== $userId) {
             return false;
         }
 
-        return $this->delete();
+        $this->delete();
     }
 }
