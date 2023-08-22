@@ -2,8 +2,6 @@
 
 @section('content')
 
-
-
     <!-- 作成フォーム -->
     <h1>ツイート作成</h1>
 
@@ -25,29 +23,26 @@
 
     <br><br>
 
+    <!-- 一覧表示 -->
+    <h2>ツイート一覧</h2>
+    <ul style="list-style-type: none;">
+        @foreach($tweets as $tweet)
+            <li style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc;">
+                {{ $tweet->content }}
 
-<!-- 一覧表示 -->
-<h2>一覧</h2>
-<ul style="list-style-type: none;">
-    @foreach($tweets as $tweet)
-        <li style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc;">
-            {{ $tweet->content }}
-            @if($authId === $tweet->user_id)
-                <a href="{{ route('tweets.edit', $tweet->id) }}">ツイートを編集する</a>
-            @endif
+                @if($authId === $tweet->user_id && auth()->check() && is_null(auth()->user()->deleted_at))
+                    <a href="{{ route('tweets.edit', $tweet->id) }}">ツイートを編集する</a>
 
-<!-- 削除フォーム -->
-            @if($authId === $tweet->user_id)
-                <form action="{{ route('tweets.destroy', $tweet->id) }}" method="post" onsubmit="return confirm('本当に削除しますか？');">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" style="color: red;">🗑️ 削除</button>
-                </form>
-            @endif
-        </li>
-    @endforeach
-</ul>
+                    <!-- 削除フォーム -->
+                    <form action="{{ route('tweets.destroy', $tweet->id) }}" method="post" onsubmit="return confirm('本当に削除しますか？');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" style="color: red;">🗑️ 削除</button>
+                    </form>
+                @endif
+            </li>
+        @endforeach
+    </ul>
 
+    @endsection
 
-
-@endsection
