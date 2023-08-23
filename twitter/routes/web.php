@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\TweetController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,10 +21,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::resource('tweets', \App\Http\Controllers\TweetController::class);
+Route::resource('tweets', TweetController::class);
 
-Route::prefix('mypage')->group(function () {
-    Route::get('/', [\App\Http\Controllers\UserProfileController::class, 'show'])->name('mypage.show');
-    Route::put('/', [\App\Http\Controllers\UserProfileController::class, 'update'])->name('mypage.update');
-    Route::delete('/', [\App\Http\Controllers\UserProfileController::class, 'destroy'])->name('mypage.destroy');
-});
+Route::resource('mypage', UserProfileController::class)->only(['index', 'show','update','destroy']);
+
+

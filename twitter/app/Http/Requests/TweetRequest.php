@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\MaxWordCountValidation;
+
 
 class TweetRequest extends FormRequest
 {
@@ -24,16 +26,14 @@ class TweetRequest extends FormRequest
     public function rules()
     {
         return [
-            'content' =>'required|max:255'
+            'content' => ['required', new MaxWordCountValidation(280)]
         ];
     }
 
     public function messages()
     {
         return [
-            'content.required' => '文字を一文字以上入力して下さい。',
-            'content.max' =>'255文字以下で入力して下さい',
-
+            'content.required' => '文字を1文字以上入力して下さい。',
         ];
     }
 }

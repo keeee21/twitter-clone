@@ -3,7 +3,7 @@
 
 <h1>マイページ</h1>
 
-<form method="POST" action="{{ route('mypage.update') }}">
+<form method="POST" action="{{ route('mypage.update', ['mypage' => $user->id]) }}">
 
     @if(session('success'))
     <div class="alert alert-success">
@@ -37,8 +37,8 @@
 
 <br>
 
-<form method="POST" action="{{ route('mypage.destroy') }}" onsubmit="
-    return confirm('⚠️本当にアカウントを削除してもよろしいですか？⚠️');">
+<form method="POST" action="{{ route('mypage.destroy', ['mypage' => $user->id]) }}"
+    onsubmit="return confirm('⚠️本当にアカウントを削除してもよろしいですか？⚠️');">
     @csrf
     @method('DELETE')
     <button type="submit">アカウントを削除する</button>

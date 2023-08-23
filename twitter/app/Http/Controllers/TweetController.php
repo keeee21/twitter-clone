@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Tweet;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\TweetRequest;
@@ -23,6 +22,7 @@ class TweetController extends Controller
         $tweet = new Tweet();
         $tweets = $tweet->get();
         $authID = Auth::id();
+
         return view('tweets.index', ['tweets' => $tweets,'authId' => $authID]);
     }
 
@@ -65,20 +65,21 @@ class TweetController extends Controller
     /**
      * 指定したツイートを編集する画面を表示
      * @param int $tweetId
-     * @return view
+     * @return view|RedirectResponse
      */
-    public function edit($tweetId): View
+    public function edit($tweetId): View|RedirectResponse
     {
-    $tweetInstance = new Tweet();
-    $tweet = $tweetInstance->findTweet($tweetId);
-    $loginUserId = Auth::id();
+        $tweetInstance = new Tweet();
+        $tweet = $tweetInstance->findTweet($tweetId);
+        $loginUserId = Auth::id();
 
-    // ユーザーがこのツイートのオーナーであることを確認する
-    if (!$tweet->isOwnedBy($loginUserId)) {
-        return redirect()->route('tweets.index');
+        // ユーザーがこのツイートのオーナーであることを確認する
+        if (!$tweet->isOwnedBy($loginUserId)) {
+            return redirect()->route('tweets.index');
+        }
+
+        return view('tweets.edit', ['tweet' => $tweet]);
     }
-    return view('tweets.edit', ['tweet' => $tweet]);
-}
 
 
     /**
@@ -95,17 +96,17 @@ class TweetController extends Controller
 
         // ユーザーがこのツイートのオーナーであることを確認する
         if (!$tweet->isOwnedBy(Auth::id())) {
-            return redirect()->route('tweets.index');
+            return redirect()->route('tweets.index')->with('message', 'あなたはこのツイートのオーナーではありません。');
         }
 
-        $tweet->updateTweet($request->content);
+        $tweet->update(['content' => $request->content]);
         return redirect()->route('tweets.index')->with('message', 'ツイートの更新に成功しました!');
     }
 
     /**
      * 指定したツイートを削除
      *
-     * @param  int $id
+     * @param  int $tweetId
      * @return RedirectResponse
      */
     public function destroy($tweetId): RedirectResponse
@@ -113,13 +114,13 @@ class TweetController extends Controller
         $tweet = (new Tweet())->findTweet($tweetId);
         $authId = Auth::id();
 
-    // ユーザーがこのツイートのオーナーであることを確認する
-        if (!$tweet->deleteTweet($authId)) {
-            return redirect()->route('tweets.index');
+        // ユーザーがこのツイートのオーナーであることを確認する
+        if ($tweet->deleteTweet($authId)) {
+            return redirect()->route('tweets.index')->with('message', 'ツイートが削除されました');
         }
 
-        return redirect()->route('tweets.index')->with('message', 'ツイートが削除されました');
+
+        return redirect()->route('tweets.index')->with('message', 'ツイートの削除に失敗しました');
     }
 
 }
-

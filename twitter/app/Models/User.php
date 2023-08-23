@@ -12,33 +12,27 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $fillable = ['name','email','password',];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password','remember_token',];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    protected $casts = ['email_verified_at' => 'datetime', ];
 
     protected $dates = ['deleted_at'];
 
     /**
-     * ユーザーのプロフィールを更新
-     *
-     * @param array $data
-     */
+    * ユーザーのプロフィールを更新
+    *
+    * @param array $data
+    */
     public function updateProfile($data)
     {
-        $this->name = $data['name'];
-        $this->email = $data['email'];
-        $this->save();
+        // 空の 'email' を削除
+        if (array_key_exists('email', $data) && empty($data['email'])) {
+            unset($data['email']);
+        }
+
+        $this->update($data);
     }
 
     /**

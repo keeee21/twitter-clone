@@ -38,4 +38,13 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $exception)
+{
+    if ($exception->getMessage() === 'TweetNotFoundException') {
+        return redirect()->route('tweets.index')->with('error', 'ツイートが見つかりませんでした。');
+    }
+
+    return parent::render($request, $exception);
+}
 }

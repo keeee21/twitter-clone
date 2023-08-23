@@ -5,11 +5,11 @@
     <!-- 作成フォーム -->
     <h1>ツイート作成</h1>
 
-    @if (session('message'))
-    <div class="alert alert-success">
-        {{ session('message') }}
-    </div>
-@endif
+    @if(session('message'))
+        <div class="alert {{ session('error') ? 'alert-danger' : 'alert-success' }}">
+            {{ session('message') }}
+        </div>
+    @endif
 
     @error('content')
         <div style="color: red;">{{ $message }}</div>
@@ -44,5 +44,4 @@
         @endforeach
     </ul>
 
-    @endsection
-
+@endsection
