@@ -9,11 +9,6 @@ use Illuminate\Http\RedirectResponse;
 
 class UserProfileController extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
     /**
      * マイページを表示します。
      *
@@ -21,9 +16,8 @@ class UserProfileController extends Controller
      */
     public function show(): view
     {
-        $authId = Auth::id();
-        $user = Auth::user();
-        return view('mypage.show', compact('user'));
+        $loggedInUser = Auth::user();
+        return view('mypage.show', compact('loggedInUser'));
     }
 
     /**
@@ -34,10 +28,10 @@ class UserProfileController extends Controller
      */
     public function update(UserProfileRequest $request): RedirectResponse
     {
-        $user = Auth::user();
-        $user->updateProfile($request->only(['name', 'email']));
+        $loginUser = Auth::user();
+        $loginUser->updateProfile($request->only(['name', 'email']));
 
-        return redirect()->route('mypage.show', $user)->with('success', 'プロフィールを更新しました');
+        return redirect()->route('mypage.show', $loginUser)->with('success', 'プロフィールを更新しました');
     }
 
     /**
@@ -47,9 +41,8 @@ class UserProfileController extends Controller
      */
     public function destroy(): RedirectResponse
     {
-        $authId = Auth::id();
-        $user = Auth::user();
-        $user->removeAccount();
+        $loginUser = Auth::user();
+        $loginUser->removeAccount();
 
         return redirect()->route('tweets.index')->with('success', 'アカウントを削除しました');
     }

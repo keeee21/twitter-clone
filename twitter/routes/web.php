@@ -31,9 +31,9 @@ Route::prefix('tweets')->group(function() {
 
 Route::prefix('mypage')->group(function() {
     Route::get('/', [UserProfileController::class, 'index'])->name('mypage.index');
-    Route::get('/{user}', [UserProfileController::class, 'show'])->name('mypage.show');
-    Route::put('/{user}', [UserProfileController::class, 'update'])->name('mypage.update');
-    Route::delete('/{user}', [UserProfileController::class, 'destroy'])->name('mypage.destroy');
+    Route::get('/{userId}', [UserProfileController::class, 'show'])->name('mypage.show');
+    Route::put('/{userId}', [UserProfileController::class, 'update'])->name('mypage.update');
+    Route::delete('/{userId}', [UserProfileController::class, 'destroy'])->name('mypage.destroy');
 });
 
 

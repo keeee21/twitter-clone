@@ -44,9 +44,12 @@ class TweetController extends Controller
     public function store(TweetRequest $request): RedirectResponse
     {
         $tweet = new Tweet();
-        $tweet->create($request->content, Auth::id());
+        $tweet->createNewTweet($request->content, Auth::id());
+
         return redirect()->route('tweets.index');
     }
+
+
 
     /**
      * 指定したツイートを表示
@@ -61,16 +64,16 @@ class TweetController extends Controller
                 throw new \Exception('不正なツイートIDが提供されました。');
             }
 
-            $tweetInstance = new Tweet();
-            $tweet = $tweetInstance->findByTweetId($tweetId);
+            $tweet = new Tweet();
+            $tweet = $tweet->findByTweetId($tweetId);
 
-            if (!$tweet || !($tweet instanceof Tweet)) {
+            if (is_null($tweet) || !($tweet instanceof Tweet)) {
                 throw new \Exception('該当するツイートが見つかりませんでした。');
             }
 
             return view('tweets.show', ['tweet' => $tweet]);
         } catch (\Exception $e) {
-            return redirect()->route('tweets.index')->with('message', $e->getMessage());
+            return redirect()->route('tweets.index')->with('message', '予期せぬエラーが発生しました');
         }
     }
 
@@ -83,10 +86,10 @@ class TweetController extends Controller
     public function edit($tweetId): View|RedirectResponse
     {
         try {
-            $tweetInstance = new Tweet();
-            $tweet = $tweetInstance->findByTweetId($tweetId);
+            $tweet = new Tweet();
+            $tweet = $tweet->findByTweetId($tweetId);
 
-            if (!$tweet) {
+            if (is_null($tweet)) {
                 throw new \Exception('該当するツイートが見つかりませんでした。');
             }
 
@@ -98,7 +101,7 @@ class TweetController extends Controller
 
             return view('tweets.edit', ['tweet' => $tweet]);
         } catch (\Exception $e) {
-            return redirect()->route('tweets.index')->with('message', $e->getMessage());
+            return redirect()->route('tweets.index')->with('message', '予期せぬエラーが発生しました');
         }
     }
 
@@ -146,7 +149,7 @@ class TweetController extends Controller
 
             return redirect()->route('tweets.index')->with('message', 'ツイートが削除されました');
         } catch (\Exception $e) {
-            return redirect()->route('tweets.index')->with('message', $e->getMessage());
+            return redirect()->route('tweets.index')->with('message', '予期せぬエラーが発生しました');
         }
     }
 
