@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tweet;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\TweetRequest;
-use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
-
+use Illuminate\Contracts\View\View;
 
 
 class TweetController extends Controller
@@ -21,9 +20,9 @@ class TweetController extends Controller
     {
         $tweet = new Tweet();
         $tweets = $tweet->get();
-        $authID = Auth::id();
+        $loginUserId = Auth::id();
 
-        return view('tweets.index', ['tweets' => $tweets,'authId' => $authID]);
+        return view('tweets.index', ['tweets' => $tweets,'authId' => $loginUserId]);
     }
 
     /**
@@ -53,14 +52,28 @@ class TweetController extends Controller
      * 指定したツイートを表示
      *
      * @param int $tweetId
-     * @return view
+     * @return View|RedirectResponse
      */
-    public function show($tweetId): View
+    public function show($tweetId): View|RedirectResponse
     {
-        $tweet = new Tweet();
-        $tweet = $tweet->findTweetById($tweetId);
-        return view('tweets.show', ['tweet' => $tweet]);
+        try {
+            if (is_null($tweetId) || !is_numeric($tweetId)) {
+                throw new \Exception('不正なツイートIDが提供されました。');
+            }
+
+            $tweetInstance = new Tweet();
+            $tweet = $tweetInstance->findByTweetId($tweetId);
+
+            if (!$tweet || !($tweet instanceof Tweet)) {
+                throw new \Exception('該当するツイートが見つかりませんでした。');
+            }
+
+            return view('tweets.show', ['tweet' => $tweet]);
+        } catch (\Exception $e) {
+            return redirect()->route('tweets.index')->with('message', $e->getMessage());
+        }
     }
+
 
     /**
      * 指定したツイートを編集する画面を表示
@@ -69,18 +82,25 @@ class TweetController extends Controller
      */
     public function edit($tweetId): View|RedirectResponse
     {
-        $tweetInstance = new Tweet();
-        $tweet = $tweetInstance->findTweet($tweetId);
-        $loginUserId = Auth::id();
+        try {
+            $tweetInstance = new Tweet();
+            $tweet = $tweetInstance->findByTweetId($tweetId);
 
-        // ユーザーがこのツイートのオーナーであることを確認する
-        if (!$tweet->isOwnedBy($loginUserId)) {
-            return redirect()->route('tweets.index');
+            if (!$tweet) {
+                throw new \Exception('該当するツイートが見つかりませんでした。');
+            }
+
+            $loginUserId = Auth::id();
+
+            if (!$tweet->isOwnedBy($loginUserId)) {
+                throw new \Exception('あなたはこのツイートのオーナーではありません。');
+            }
+
+            return view('tweets.edit', ['tweet' => $tweet]);
+        } catch (\Exception $e) {
+            return redirect()->route('tweets.index')->with('message', $e->getMessage());
         }
-
-        return view('tweets.edit', ['tweet' => $tweet]);
     }
-
 
     /**
      * 指定したツイートを更新
@@ -91,10 +111,8 @@ class TweetController extends Controller
      */
     public function update(TweetRequest $request, $tweetId): RedirectResponse
     {
-        $tweet = new Tweet();
-        $tweet = $tweet->findTweet($tweetId);
+        $tweet = (new Tweet())->findByTweetId($tweetId);
 
-        // ユーザーがこのツイートのオーナーであることを確認する
         if (!$tweet->isOwnedBy(Auth::id())) {
             return redirect()->route('tweets.index')->with('message', 'あなたはこのツイートのオーナーではありません。');
         }
@@ -111,16 +129,25 @@ class TweetController extends Controller
      */
     public function destroy($tweetId): RedirectResponse
     {
-        $tweet = (new Tweet())->findTweet($tweetId);
-        $authId = Auth::id();
+        try {
+            $tweet = (new Tweet())->find($tweetId);
 
-        // ユーザーがこのツイートのオーナーであることを確認する
-        if ($tweet->deleteTweet($authId)) {
+            if (!$tweet) {
+                throw new \Exception("ツイートが見つかりませんでした");
+            }
+
+            $loginUserId = Auth::id();
+
+            if (!$tweet->isOwnedBy($loginUserId)) {
+                throw new \Exception('あなたはこのツイートのオーナーではありません。');
+            }
+
+            $tweet->deleteByTweetId($tweetId);
+
             return redirect()->route('tweets.index')->with('message', 'ツイートが削除されました');
+        } catch (\Exception $e) {
+            return redirect()->route('tweets.index')->with('message', $e->getMessage());
         }
-
-
-        return redirect()->route('tweets.index')->with('message', 'ツイートの削除に失敗しました');
     }
 
 }

@@ -25,15 +25,14 @@ class UserProfileRequest extends FormRequest
     {
         $userId = auth()->id();
         return [
-            'name' => 'required|string|min:2|max:20',
-            'email' => 'email:filter,dns'
+            'name' => 'sometimes|string|min:2|max:20',
+            'email' => 'sometimes|nullable|email:filter,dns'
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => '名前は必須です。',
             'name.min' => '名前は2文字以上で入力して下さい。',
             'name.max' => '名前は20文字以下で入力して下さい。',
             'email.email' => '有効なメールアドレスを入力してください。',

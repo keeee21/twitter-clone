@@ -19,10 +19,21 @@ Route::get('/', \App\Http\Controllers\TweetController::class . '@index');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::prefix('tweets')->group(function() {
+    Route::get('/', [TweetController::class, 'index'])->name('tweets.index');
+    Route::get('/create', [TweetController::class, 'create'])->name('tweets.create');
+    Route::post('/', [TweetController::class, 'store'])->name('tweets.store');
+    Route::get('/{tweet}', [TweetController::class, 'show'])->name('tweets.show');
+    Route::get('/{tweet}/edit', [TweetController::class, 'edit'])->name('tweets.edit');
+    Route::put('/{tweet}', [TweetController::class, 'update'])->name('tweets.update');
+    Route::delete('/{tweet}', [TweetController::class, 'destroy'])->name('tweets.destroy');
+});
 
-Route::resource('tweets', TweetController::class);
-
-Route::resource('mypage', UserProfileController::class)->only(['index', 'show','update','destroy']);
+Route::prefix('mypage')->group(function() {
+    Route::get('/', [UserProfileController::class, 'index'])->name('mypage.index');
+    Route::get('/{user}', [UserProfileController::class, 'show'])->name('mypage.show');
+    Route::put('/{user}', [UserProfileController::class, 'update'])->name('mypage.update');
+    Route::delete('/{user}', [UserProfileController::class, 'destroy'])->name('mypage.destroy');
+});
 
 

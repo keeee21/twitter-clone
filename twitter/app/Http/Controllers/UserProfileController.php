@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UserProfileRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 class UserProfileController extends Controller
 {
+    public function index()
+    {
+        //
+    }
+
     /**
      * マイページを表示します。
      *
@@ -18,11 +21,10 @@ class UserProfileController extends Controller
      */
     public function show(): view
     {
-        $authID = Auth::id();
+        $authId = Auth::id();
         $user = Auth::user();
         return view('mypage.show', compact('user'));
     }
-
 
     /**
      * 名前・メールアドレスを更新
@@ -45,12 +47,12 @@ class UserProfileController extends Controller
      */
     public function destroy(): RedirectResponse
     {
-        $authID = Auth::id();
+        $authId = Auth::id();
         $user = Auth::user();
         $user->removeAccount();
 
         return redirect()->route('tweets.index')->with('success', 'アカウントを削除しました');
     }
 
-    
+
 }

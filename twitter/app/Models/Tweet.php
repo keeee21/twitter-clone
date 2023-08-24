@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,7 +31,7 @@ class Tweet extends Model
      * @param string $content
      * @param int $userId
      */
-    public function create($content, $userId)
+    public function createNewTweet($content, $userId)
     {
         $this->content = $content;
         $this->user_id = $userId;
@@ -54,17 +53,12 @@ class Tweet extends Model
     /**
      * ツイートIDによってツイートを取得
      *
-     * @param int $loginUserId
+     * @param int $tweetId
      * @return Tweet
      */
-    public function findTweet(int $tweetId): Tweet
+    public function findByTweetId(int $tweetId): Tweet
     {
         $tweet = $this->find($tweetId);
-
-        if (!$tweet) {
-            throw new Exception('TweetNotFoundException');
-        }
-
         return $tweet;
     }
 
@@ -82,16 +76,12 @@ class Tweet extends Model
     /**
      * ユーザーIDに基づいてツイートを削除
      *
-     * @param int $userId
-     * @return boolean
+     * @param int $tweetId
      */
-    public function deleteTweet($userId)
+    public function deleteByTweetId($tweetId)
     {
-        if (!$this->isOwnedBy($userId)) {
-            return false;
-        }
-
-        $this->delete();
-        return true;
+        $tweet = $this->find($tweetId);
+        $tweet->delete();
     }
+
 }
