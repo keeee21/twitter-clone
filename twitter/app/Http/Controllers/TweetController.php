@@ -68,7 +68,7 @@ class TweetController extends Controller
             $tweet = $tweet->findByTweetId($tweetId);
 
             if (is_null($tweet) || !($tweet instanceof Tweet)) {
-                throw new \Exception('該当するツイートが見つかりませんでした。');
+                throw new \Exception('ツイートが見つかりませんでした。');
             }
 
             return view('tweets.show', ['tweet' => $tweet]);
@@ -135,8 +135,8 @@ class TweetController extends Controller
         try {
             $tweet = (new Tweet())->find($tweetId);
 
-            if (!$tweet) {
-                throw new \Exception("ツイートが見つかりませんでした");
+            if (is_null($tweet) || !($tweet instanceof Tweet)) {
+                throw new \Exception('ツイートが見つかりませんでした。');
             }
 
             $loginUserId = Auth::id();

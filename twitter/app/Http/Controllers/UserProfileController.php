@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Http\Requests\UserProfileRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
@@ -10,14 +11,25 @@ use Illuminate\Http\RedirectResponse;
 class UserProfileController extends Controller
 {
     /**
-     * マイページを表示します。
+     * ユーザー一覧ページを表示する
+     *
+     * @return view
+     */
+    public function index(): view
+    {
+        $users = User::paginate(10);
+        return view('mypage.index', ['users' => $users]);
+    }
+
+    /**
+     * ログインしているユーザーのマイページを表示します。
      *
      * @return view
      */
     public function show(): view
     {
-        $loggedInUser = Auth::user();
-        return view('mypage.show', compact('loggedInUser'));
+        $loginUser = Auth::user();
+        return view('mypage.show', compact('loginUser'));
     }
 
     /**
@@ -35,6 +47,17 @@ class UserProfileController extends Controller
     }
 
     /**
+     * ユーザー情報編集ページを表示
+     *
+     * @return View
+     */
+    public function edit(): View
+        {
+            $loginUser = Auth::user();
+            return view('mypage.edit',compact('loginUser'));
+        }
+
+    /**
      *  現在のユーザーアカウントを削除
      *
      * @return RedirectResponse
@@ -46,6 +69,5 @@ class UserProfileController extends Controller
 
         return redirect()->route('tweets.index')->with('success', 'アカウントを削除しました');
     }
-
 
 }

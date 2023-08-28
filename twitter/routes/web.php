@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\TweetController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,10 +16,12 @@ use App\Http\Controllers\TweetController;
 |
 */
 
-Route::get('/', \App\Http\Controllers\TweetController::class . '@index');
-
+// General Routes
+Route::get('/', TweetController::class . '@index');
+Route::get('/home', [TweetController::class, 'index'])->name('home');
 Auth::routes();
 
+// Tweets Routes
 Route::prefix('tweets')->group(function() {
     Route::get('/', [TweetController::class, 'index'])->name('tweets.index');
     Route::get('/create', [TweetController::class, 'create'])->name('tweets.create');
@@ -29,11 +32,12 @@ Route::prefix('tweets')->group(function() {
     Route::delete('/{tweet}', [TweetController::class, 'destroy'])->name('tweets.destroy');
 });
 
+// MyPage Routes
 Route::prefix('mypage')->group(function() {
     Route::get('/', [UserProfileController::class, 'index'])->name('mypage.index');
     Route::get('/{userId}', [UserProfileController::class, 'show'])->name('mypage.show');
     Route::put('/{userId}', [UserProfileController::class, 'update'])->name('mypage.update');
     Route::delete('/{userId}', [UserProfileController::class, 'destroy'])->name('mypage.destroy');
+    Route::get('/mypage/edit', [UserProfileController::class, 'edit'])->name('mypage.edit');
+    Route::get('/users', [UserProfileController::class, 'index'])->name('users.index');
 });
-
-

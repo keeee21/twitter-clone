@@ -3,7 +3,7 @@
 @section('content')
 
     <!-- 作成フォーム -->
-    <h1>ツイート作成</h1>
+    <h1 class="mb-4 title-decorated display-7">ツイート作成</h1>
 
     @if(session('message'))
         <div class="alert {{ session('error') ? 'alert-danger' : 'alert-success' }}">
