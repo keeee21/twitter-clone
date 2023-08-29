@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Tweet;
 use App\Http\Requests\TweetRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
 
@@ -20,9 +20,8 @@ class TweetController extends Controller
     {
         $tweet = new Tweet();
         $tweets = $tweet->get();
-        $loginUserId = Auth::id();
 
-        return view('tweets.index', ['tweets' => $tweets,'authId' => $loginUserId]);
+        return view('tweets.index', ['tweets' => $tweets,'authId' => Auth::id()]);
     }
 
     /**
@@ -44,12 +43,10 @@ class TweetController extends Controller
     public function store(TweetRequest $request): RedirectResponse
     {
         $tweet = new Tweet();
-        $tweet->createNewTweet($request->content, Auth::id());
+        $tweet->createNewTweet($request->content);
 
-        return redirect()->route('tweets.index');
+        return redirect()->route('tweets.index')->with('message', 'ツイートが作成されました');;
     }
-
-
 
     /**
      * 指定したツイートを表示
@@ -57,7 +54,7 @@ class TweetController extends Controller
      * @param int $tweetId
      * @return View|RedirectResponse
      */
-    public function show($tweetId): View|RedirectResponse
+    public function show(int $tweetId): View|RedirectResponse
     {
         try {
             if (is_null($tweetId) || !is_numeric($tweetId)) {
@@ -77,13 +74,12 @@ class TweetController extends Controller
         }
     }
 
-
     /**
      * 指定したツイートを編集する画面を表示
      * @param int $tweetId
-     * @return view|RedirectResponse
+     * @return View|RedirectResponse
      */
-    public function edit($tweetId): View|RedirectResponse
+    public function edit(int $tweetId): View|RedirectResponse
     {
         try {
             $tweet = new Tweet();
@@ -93,9 +89,7 @@ class TweetController extends Controller
                 throw new \Exception('該当するツイートが見つかりませんでした。');
             }
 
-            $loginUserId = Auth::id();
-
-            if (!$tweet->isOwnedBy($loginUserId)) {
+            if (!$tweet->isOwnedBy(Auth::id())) {
                 throw new \Exception('あなたはこのツイートのオーナーではありません。');
             }
 
@@ -112,7 +106,7 @@ class TweetController extends Controller
      * @param  int  $tweetId
      * @return RedirectResponse
      */
-    public function update(TweetRequest $request, $tweetId): RedirectResponse
+    public function update(TweetRequest $request, int $tweetId): RedirectResponse
     {
         $tweet = (new Tweet())->findByTweetId($tweetId);
 
@@ -130,7 +124,7 @@ class TweetController extends Controller
      * @param  int $tweetId
      * @return RedirectResponse
      */
-    public function destroy($tweetId): RedirectResponse
+    public function destroy(int $tweetId): RedirectResponse
     {
         try {
             $tweet = (new Tweet())->find($tweetId);
@@ -139,9 +133,7 @@ class TweetController extends Controller
                 throw new \Exception('ツイートが見つかりませんでした。');
             }
 
-            $loginUserId = Auth::id();
-
-            if (!$tweet->isOwnedBy($loginUserId)) {
+            if (!$tweet->isOwnedBy(Auth::id())) {
                 throw new \Exception('あなたはこのツイートのオーナーではありません。');
             }
 

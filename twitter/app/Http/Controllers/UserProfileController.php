@@ -13,9 +13,9 @@ class UserProfileController extends Controller
     /**
      * ユーザー一覧ページを表示する
      *
-     * @return view
+     * @return View
      */
-    public function index(): view
+    public function index(): View
     {
         $users = User::paginate(10);
         return view('mypage.index', ['users' => $users]);
@@ -24,12 +24,12 @@ class UserProfileController extends Controller
     /**
      * ログインしているユーザーのマイページを表示します。
      *
-     * @return view
+     * @return View
      */
-    public function show(): view
+    public function show(): View
     {
-        $loginUser = Auth::user();
-        return view('mypage.show', compact('loginUser'));
+        $loginUserId = Auth::user();
+        return view('mypage.show', compact('loginUserId'));
     }
 
     /**
@@ -40,10 +40,10 @@ class UserProfileController extends Controller
      */
     public function update(UserProfileRequest $request): RedirectResponse
     {
-        $loginUser = Auth::user();
-        $loginUser->updateProfile($request->only(['name', 'email']));
+        $loginUserId = Auth::user();
+        $loginUserId->updateProfile($request->only(['name', 'email']));
 
-        return redirect()->route('mypage.show', $loginUser)->with('success', 'プロフィールを更新しました');
+        return redirect()->route('mypage.show', $loginUserId)->with('success', 'プロフィールを更新しました');
     }
 
     /**
@@ -52,10 +52,11 @@ class UserProfileController extends Controller
      * @return View
      */
     public function edit(): View
-        {
-            $loginUser = Auth::user();
-            return view('mypage.edit',compact('loginUser'));
-        }
+    {
+        $loginUserId = Auth::user();
+        return view('mypage.edit', compact('loginUserId'));
+    }
+
 
     /**
      *  現在のユーザーアカウントを削除
@@ -64,8 +65,8 @@ class UserProfileController extends Controller
      */
     public function destroy(): RedirectResponse
     {
-        $loginUser = Auth::user();
-        $loginUser->removeAccount();
+        $loginUserId = Auth::user();
+        $loginUserId->removeAccount();
 
         return redirect()->route('tweets.index')->with('success', 'アカウントを削除しました');
     }

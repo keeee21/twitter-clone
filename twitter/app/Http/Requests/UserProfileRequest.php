@@ -23,7 +23,6 @@ class UserProfileRequest extends FormRequest
      */
     public function rules()
     {
-        $userId = auth()->id();
         return [
             'name' => 'sometimes|string|min:2|max:20',
             'email' => 'sometimes|nullable|email:filter,dns'

@@ -28,11 +28,7 @@ class MaxWordCountValidation implements Rule
         $characters = mb_str_split($value);
 
         foreach ($characters as $char) {
-            if (mb_strlen($char) == strlen($char)) {
-                $count += 0.5; // 半角文字
-            } else {
-                $count += 1; // 全角文字
-            }
+            $count += (mb_strlen($char) == strlen($char)) ? 0.5 : 1;
         }
 
         return $this->MaxWordCount >= $count;

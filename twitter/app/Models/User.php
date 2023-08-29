@@ -28,7 +28,7 @@ class User extends Authenticatable
     public function updateProfile($data)
     {
         // 空の 'email' を削除
-        if (array_key_exists('email', $data) && empty($data['email'])) {
+        if (empty($data['email'])) {
             unset($data['email']);
         }
 
