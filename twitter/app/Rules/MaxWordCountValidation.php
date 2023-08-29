@@ -6,6 +6,9 @@ use Illuminate\Contracts\Validation\Rule;
 
 class MaxWordCountValidation implements Rule
 {
+    const SINGLE_BYTE_CHAR_COUNT = 0.5;
+    const DOUBLE_BYTE_CHAR_COUNT = 1;
+
     /**
      * Create a new rule instance.
      *
@@ -28,7 +31,7 @@ class MaxWordCountValidation implements Rule
         $characters = mb_str_split($value);
 
         foreach ($characters as $char) {
-            $count += (mb_strlen($char) == strlen($char)) ? 0.5 : 1;
+            $count += (mb_strlen($char) == strlen($char)) ? self::SINGLE_BYTE_CHAR_COUNT : self::DOUBLE_BYTE_CHAR_COUNT;
         }
 
         return $this->MaxWordCount >= $count;
@@ -41,7 +44,8 @@ class MaxWordCountValidation implements Rule
      */
     public function message()
     {
-        return "ツイートは全角で140文字、半角で280文字以下で入力してください";
+        $fullWidthMax = (int) ($this->MaxWordCount * self::SINGLE_BYTE_CHAR_COUNT);
+        $halfWidthMax = $this->MaxWordCount;
+        return "ツイートは全角で{$fullWidthMax}文字、半角で{$halfWidthMax}文字以下で入力してください";
     }
 }
-

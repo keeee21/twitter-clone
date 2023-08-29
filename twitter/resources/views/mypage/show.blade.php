@@ -18,6 +18,7 @@
     <div class="card-body">
         <p><strong>名前:</strong> {{ $loginUserId->name }}</p>
         <p><strong>メールアドレス:</strong> {{ $loginUserId->email }}</p>
+        <p><strong>アカウント制作日:</strong> {{ $loginUserId->created_at }}</p>
     </div>
 </div>
 
