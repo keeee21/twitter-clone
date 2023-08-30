@@ -1,0 +1,23 @@
+.title-decorated {
+    text-decoration: underline;
+}
+
+.table-bordered td,
+.table-bordered th {
+    border: 1px solid #ddd;
+}
+
+.btn-custom {
+    padding: 12px 20px;
+    font-size: 16px;
+    margin-right: 10px;
+    margin-bottom: 15px;
+}
+
+.btn-custom:hover {
+    opacity: 0.8;
+}
+
+.navbar.bg-primary {
+    background-color: rgb(29, 155, 240) !important;
+}

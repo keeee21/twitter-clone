@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-
-
 class Tweet extends Model
 {
     use HasFactory;
@@ -28,12 +26,11 @@ class Tweet extends Model
      * 新しいツイートを作成
      *
      * @param string $content
-     * @param int $userId
      */
-    public function create($content, $userId)
+    public function createNewTweet(string $content): void
     {
         $this->content = $content;
-        $this->user_id = $userId;
+        $this->user_id = Auth::id();
         $this->save();
     }
 
@@ -43,7 +40,7 @@ class Tweet extends Model
      * @param string $content
      * @return boolean
      */
-    public function updateTweet($content): bool
+    public function updateTweet(string $content): bool
     {
         $this->content = $content;
         return $this->save();
@@ -52,10 +49,10 @@ class Tweet extends Model
     /**
      * ツイートIDによってツイートを取得
      *
-     * @param int $loginUserId
-     * @return Tweet|null
+     * @param int $tweetId
+     * @return Tweet
      */
-    public function findTweet($tweetId): Tweet|null
+    public function findByTweetId(int $tweetId): Tweet
     {
         return $this->find($tweetId);
     }
@@ -68,21 +65,19 @@ class Tweet extends Model
      */
     public function isOwnedBy(int $userId): bool
     {
-        return $this->user_id == $userId;
+        return $this->user_id === $userId;
     }
 
     /**
      * ユーザーIDに基づいてツイートを削除
      *
-     * @param int $userId
-     * @return boolean
+     * @param int $tweetId
+     * @return void
      */
-    public function deleteTweet($userId)
+    public function deleteByTweetId(int $tweetId): void
     {
-        if ($this->user_id !== $userId) {
-            return false;
-        }
-
-        $this->delete();
+        $tweet = $this->find($tweetId);
+        $tweet->delete();
     }
+
 }
