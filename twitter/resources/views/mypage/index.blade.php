@@ -2,6 +2,14 @@
 
 @section('content')
 <h1 class="mb-4 title-decorated display-7">ユーザー一覧</h1>
+@extends('layouts.app')
+
+{{-- フラッシュメッセージの表示 --}}
+@if(session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
 
 <table class="table table-bordered">
     <thead>

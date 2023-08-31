@@ -4,7 +4,7 @@
 <div class="container">
     <h1>{{ $authUserMeta->name }}さんの情報を編集</h1>
 
-    <form action="{{ route('mypage.update', $authUserMeta->id) }}" method="post">
+    <form action="{{ route('mypage.update') }}" method="post">
         @csrf
         @method('PUT')
 

@@ -78,10 +78,10 @@ class UserProfileController extends Controller
      */
     public function follow(int $userId): RedirectResponse
     {
-        $userToFollow = User::findOrFail($userId);
+        $userToFollow = User::find($userId);
         $authUser = Auth::user();
 
-        $authUser->following()->attach($userToFollow);
+        $authUser->follow($userToFollow);
 
         return redirect()->back()->with('success', 'ユーザーをフォローしました');
     }
@@ -94,11 +94,12 @@ class UserProfileController extends Controller
      */
     public function unfollow(int $userId): RedirectResponse
     {
-        $userToUnfollow = User::findOrFail($userId);
+        $userToUnfollow = User::find($userId);
         $authUser = Auth::user();
 
-        $authUser->following()->detach($userToUnfollow);
+        $authUser->unfollow($userToUnfollow);
 
         return redirect()->back()->with('success', 'ユーザーのフォローを解除しました');
     }
+
 }

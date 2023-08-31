@@ -17,35 +17,35 @@ use App\Http\Controllers\TweetController;
 */
 
 // General Routes
-Route::get('/', TweetController::class . '@index');
+Route::get('/', [TweetController::class, 'index']);
 Route::get('/home', [TweetController::class, 'index'])->name('home');
 Auth::routes();
 
-Route::group(['middleware' => 'auth'], function() {
+Route::middleware(['auth'])->group(function() {
 
     // Tweets Routes
-    Route::prefix('tweets')->group(function() {
-        Route::get('/', [TweetController::class, 'index'])->name('tweets.index');
-        Route::get('/create', [TweetController::class, 'create'])->name('tweets.create');
-        Route::post('/', [TweetController::class, 'store'])->name('tweets.store');
-        Route::get('/{tweet}', [TweetController::class, 'show'])->name('tweets.show');
-        Route::get('/{tweet}/edit', [TweetController::class, 'edit'])->name('tweets.edit');
-        Route::put('/{tweet}', [TweetController::class, 'update'])->name('tweets.update');
-        Route::delete('/{tweet}', [TweetController::class, 'destroy'])->name('tweets.destroy');
+    Route::group(['prefix' => 'tweets', 'as' => 'tweets.'], function() {
+        Route::get('/', [TweetController::class, 'index'])->name('index');
+        Route::get('/create', [TweetController::class, 'create'])->name('create');
+        Route::post('/', [TweetController::class, 'store'])->name('store');
+        Route::get('/{tweet}', [TweetController::class, 'show'])->name('show');
+        Route::get('/{tweet}/edit', [TweetController::class, 'edit'])->name('edit');
+        Route::put('/{tweet}', [TweetController::class, 'update'])->name('update');
+        Route::delete('/{tweet}', [TweetController::class, 'destroy'])->name('destroy');
     });
 
     // MyPage Routes
-    Route::prefix('mypage')->group(function() {
-        Route::get('/edit', [UserProfileController::class, 'edit'])->name('mypage.edit');
-        Route::get('/', [UserProfileController::class, 'index'])->name('mypage.index');
-        Route::get('/{userId}', [UserProfileController::class, 'show'])->name('mypage.show');
-        Route::put('/{userId}', [UserProfileController::class, 'update'])->name('mypage.update');
-        Route::delete('/{userId}', [UserProfileController::class, 'destroy'])->name('mypage.destroy');
+    Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function() {
+        Route::get('/edit', [UserProfileController::class, 'edit'])->name('edit');
+        Route::get('/', [UserProfileController::class, 'index'])->name('index');
+        Route::get('/show', [UserProfileController::class, 'show'])->name('show');
+        Route::put('/', [UserProfileController::class, 'update'])->name('update');
+        Route::delete('/', [UserProfileController::class, 'destroy'])->name('destroy');
         Route::get('/users', [UserProfileController::class, 'index'])->name('users.index');
 
         // Follow/Unfollow Routes
-        Route::post('/follow/{userId}', [UserProfileController::class, 'follow'])->name('mypage.follow');
-        Route::post('/unfollow/{userId}', [UserProfileController::class, 'unfollow'])->name('mypage.unfollow');
+        Route::post('/follow/{userId}', [UserProfileController::class, 'follow'])->name('follow');
+        Route::post('/unfollow/{userId}', [UserProfileController::class, 'unfollow'])->name('unfollow');
     });
 
 });

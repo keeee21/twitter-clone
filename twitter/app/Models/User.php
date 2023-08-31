@@ -24,10 +24,10 @@ class User extends Authenticatable
     /**
     * ユーザーのプロフィールを更新
     *
-    * @param array $data
-    * @return void void
+    * @param array $userData
+    * @return void
     */
-    public function updateProfile($userData): void
+    public function updateProfile(array $userData): void
     {
         if (empty($userData['email'])) {
             unset($userData['email']);
@@ -35,6 +35,7 @@ class User extends Authenticatable
 
         $this->update($userData);
     }
+
 
     /**
      *  ユーザーアカウントを削除
@@ -75,4 +76,16 @@ class User extends Authenticatable
     {
         $this->following()->attach($user->id);
     }
+
+    /**
+     * ユーザーのフォローを解除する
+     *
+     * @param User $user
+     * @return void
+     */
+    public function unfollow(User $user): void
+    {
+        $this->following()->detach($user->id);
+    }
+
 }
