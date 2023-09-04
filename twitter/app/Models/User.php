@@ -27,7 +27,7 @@ class User extends Authenticatable
     * @param array $userData
     * @return void
     */
-    public function updateUserProfile(array $userData): void //updateに変更するとエラー出る
+    public function updateUserProfile(array $userData): void 
     {
         if (empty($userData['email'])) {
             unset($userData['email']);
@@ -41,7 +41,7 @@ class User extends Authenticatable
      *
      *  @return void
      */
-    public function  deleteByUserId(): void
+    public function deleteByUserId(): void
     {
         $this->delete();
     }

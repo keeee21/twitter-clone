@@ -67,7 +67,7 @@ class UserProfileController extends Controller
         $authUserMeta = Auth::user();
         $authUserMeta->deleteByUserId();
 
-        return redirect()->route('tweets.index')->with('success', 'アカウントを削除しました');
+        return redirect()->route('login')->with('success', 'アカウントを削除しました');
     }
 
     /**
