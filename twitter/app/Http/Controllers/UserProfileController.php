@@ -41,7 +41,7 @@ class UserProfileController extends Controller
     public function update(UserProfileRequest $request): RedirectResponse
     {
         $authUserMeta = Auth::user();
-        $authUserMeta->updateProfile($request->only(['name', 'email']));
+        $authUserMeta->updateUserProfile($request->only(['name', 'email']));
 
         return redirect()->route('mypage.show', $authUserMeta)->with('success', 'プロフィールを更新しました');
     }
@@ -58,14 +58,14 @@ class UserProfileController extends Controller
     }
 
     /**
-     *  現在のユーザーアカウントを削除
+     * 現在のユーザーアカウントを削除
      *
      * @return RedirectResponse
      */
     public function destroy(): RedirectResponse
     {
         $authUserMeta = Auth::user();
-        $authUserMeta->removeAccount();
+        $authUserMeta->deleteByUserId();
 
         return redirect()->route('tweets.index')->with('success', 'アカウントを削除しました');
     }
@@ -78,11 +78,8 @@ class UserProfileController extends Controller
      */
     public function follow(int $userId): RedirectResponse
     {
-        $userToFollow = User::find($userId);
         $authUser = Auth::user();
-
-        $authUser->follow($userToFollow);
-
+        $authUser->follow($userId);
         return redirect()->back()->with('success', 'ユーザーをフォローしました');
     }
 
@@ -94,11 +91,8 @@ class UserProfileController extends Controller
      */
     public function unfollow(int $userId): RedirectResponse
     {
-        $userToUnfollow = User::find($userId);
         $authUser = Auth::user();
-
-        $authUser->unfollow($userToUnfollow);
-
+        $authUser->unfollow($userId);
         return redirect()->back()->with('success', 'ユーザーのフォローを解除しました');
     }
 

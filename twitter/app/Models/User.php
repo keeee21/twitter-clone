@@ -27,7 +27,7 @@ class User extends Authenticatable
     * @param array $userData
     * @return void
     */
-    public function updateProfile(array $userData): void
+    public function updateUserProfile(array $userData): void //updateに変更するとエラー出る
     {
         if (empty($userData['email'])) {
             unset($userData['email']);
@@ -36,13 +36,12 @@ class User extends Authenticatable
         $this->update($userData);
     }
 
-
     /**
      *  ユーザーアカウントを削除
      *
      *  @return void
      */
-    public function removeAccount():void
+    public function  deleteByUserId(): void
     {
         $this->delete();
     }
@@ -56,8 +55,6 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'follows', 'user_id', 'followed_id');
     }
 
-    use HasFactory;
-
     /**
      *  ユーザーをフォローしている他のユーザーの一覧を取得
      *  @return BelongsToMany
@@ -69,23 +66,23 @@ class User extends Authenticatable
 
     /**
      *  ユーザーをフォローする
-     *  @param User $user
+     *  @param int $userId
      *  @return void
      */
-    public function follow(User $user): void
+    public function follow(int $userId): void
     {
-        $this->following()->attach($user->id);
+        $this->following()->attach($userId);
     }
 
     /**
      * ユーザーのフォローを解除する
      *
-     * @param User $user
+     * @param int $userId
      * @return void
      */
-    public function unfollow(User $user): void
+    public function unfollow(int $userId): void
     {
-        $this->following()->detach($user->id);
+        $this->following()->detach($userId);
     }
 
 }
