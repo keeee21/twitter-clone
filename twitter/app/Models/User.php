@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -23,24 +24,65 @@ class User extends Authenticatable
     /**
     * ユーザーのプロフィールを更新
     *
-    * @param array $data
+    * @param array $userData
+    * @return void
     */
-    public function updateProfile($data)
+    public function updateUserProfile(array $userData): void 
     {
-        // 空の 'email' を削除
-        if (empty($data['email'])) {
-            unset($data['email']);
+        if (empty($userData['email'])) {
+            unset($userData['email']);
         }
 
-        $this->update($data);
+        $this->update($userData);
     }
 
     /**
-     * ユーザーアカウントを削除
+     *  ユーザーアカウントを削除
      *
+     *  @return void
      */
-    public function removeAccount()
+    public function deleteByUserId(): void
     {
         $this->delete();
     }
+
+    /**
+     *  ユーザーがフォローしているユーザーの一覧を取得
+     *  @return BelongsToMany
+     */
+    public function following(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'follows', 'user_id', 'followed_id');
+    }
+
+    /**
+     *  ユーザーをフォローしている他のユーザーの一覧を取得
+     *  @return BelongsToMany
+     */
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'follows', 'followed_id', 'user_id');
+    }
+
+    /**
+     *  ユーザーをフォローする
+     *  @param int $userId
+     *  @return void
+     */
+    public function follow(int $userId): void
+    {
+        $this->following()->attach($userId);
+    }
+
+    /**
+     * ユーザーのフォローを解除する
+     *
+     * @param int $userId
+     * @return void
+     */
+    public function unfollow(int $userId): void
+    {
+        $this->following()->detach($userId);
+    }
+
 }

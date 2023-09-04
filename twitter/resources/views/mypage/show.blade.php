@@ -16,9 +16,9 @@
         プロフィール情報
     </div>
     <div class="card-body">
-        <p><strong>名前:</strong> {{ $loginUserId->name }}</p>
-        <p><strong>メールアドレス:</strong> {{ $loginUserId->email }}</p>
-        <p><strong>アカウント制作日:</strong> {{ $loginUserId->created_at }}</p>
+        <p><strong>名前:</strong> {{ $authUserMeta->name }}</p>
+        <p><strong>メールアドレス:</strong> {{ $authUserMeta->email }}</p>
+        <p><strong>アカウント制作日:</strong> {{ $authUserMeta->created_at }}</p>
     </div>
 </div>
 
@@ -26,7 +26,7 @@
     <!-- btn-customクラスを追加 -->
     <a href="{{ route('mypage.edit') }}" class="btn btn-primary btn-custom mb-3">ユーザー情報を編集</a>
 
-    <form method="POST" action="{{ route('mypage.destroy', ['userId' => $loginUserId->id]) }}" onsubmit="
+    <form action="{{ route('mypage.destroy') }}" method="post" onsubmit="
     return confirm('⚠️本当にアカウントを削除してもよろしいですか？⚠️');">
         @csrf
         @method('DELETE')

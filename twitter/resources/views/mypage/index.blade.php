@@ -3,6 +3,13 @@
 @section('content')
 <h1 class="mb-4 title-decorated display-7">ユーザー一覧</h1>
 
+{{-- フラッシュメッセージの表示 --}}
+@if(session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
+
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -10,6 +17,7 @@
             <th>名前</th>
             <th>メールアドレス</th>
             <th>アカウント制作日</th>
+            <th>アクション</th>
         </tr>
     </thead>
     <tbody>
@@ -19,6 +27,19 @@
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ $user->created_at }}</td>
+            <td class="align-middle">
+                @if(Auth::user()->following->contains($user->id))
+                    <form action="{{ route('mypage.unfollow', $user->id) }}" method="POST" class="d-inline-block">
+                        @csrf
+                        <button type="submit" class="btn btn-unfollow">フォロー中</button>
+                    </form>
+                @else
+                    <form action="{{ route('mypage.follow', $user->id) }}" method="POST" class="d-inline-block">
+                        @csrf
+                        <button type="submit" class="btn btn-follow">フォロー</button>
+                    </form>
+                @endif
+            </td>
         </tr>
         @endforeach
     </tbody>

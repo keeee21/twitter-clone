@@ -28,8 +28,8 @@ class UserProfileController extends Controller
      */
     public function show(): View
     {
-        $loginUserId = Auth::user();
-        return view('mypage.show', compact('loginUserId'));
+        $authUserMeta = Auth::user();
+        return view('mypage.show', compact('authUserMeta'));
     }
 
     /**
@@ -40,10 +40,10 @@ class UserProfileController extends Controller
      */
     public function update(UserProfileRequest $request): RedirectResponse
     {
-        $loginUserId = Auth::user();
-        $loginUserId->updateProfile($request->only(['name', 'email']));
+        $authUserMeta = Auth::user();
+        $authUserMeta->updateUserProfile($request->only(['name', 'email']));
 
-        return redirect()->route('mypage.show', $loginUserId)->with('success', 'プロフィールを更新しました');
+        return redirect()->route('mypage.show', $authUserMeta)->with('success', 'プロフィールを更新しました');
     }
 
     /**
@@ -53,22 +53,47 @@ class UserProfileController extends Controller
      */
     public function edit(): View
     {
-        $loginUserId = Auth::user();
-        return view('mypage.edit', compact('loginUserId'));
+        $authUserMeta = Auth::user();
+        return view('mypage.edit', compact('authUserMeta'));
     }
 
-
     /**
-     *  現在のユーザーアカウントを削除
+     * 現在のユーザーアカウントを削除
      *
      * @return RedirectResponse
      */
     public function destroy(): RedirectResponse
     {
-        $loginUserId = Auth::user();
-        $loginUserId->removeAccount();
+        $authUserMeta = Auth::user();
+        $authUserMeta->deleteByUserId();
 
-        return redirect()->route('tweets.index')->with('success', 'アカウントを削除しました');
+        return redirect()->route('login')->with('success', 'アカウントを削除しました');
+    }
+
+    /**
+     * ユーザーをフォローする
+     *
+     * @param int $userId
+     * @return RedirectResponse
+     */
+    public function follow(int $userId): RedirectResponse
+    {
+        $authUser = Auth::user();
+        $authUser->follow($userId);
+        return redirect()->back()->with('success', 'ユーザーをフォローしました');
+    }
+
+    /**
+     * ユーザーのフォローを解除する
+     *
+     * @param int $userId
+     * @return RedirectResponse
+     */
+    public function unfollow(int $userId): RedirectResponse
+    {
+        $authUser = Auth::user();
+        $authUser->unfollow($userId);
+        return redirect()->back()->with('success', 'ユーザーのフォローを解除しました');
     }
 
 }
