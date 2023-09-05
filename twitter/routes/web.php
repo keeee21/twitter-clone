@@ -46,8 +46,8 @@ Route::middleware(['auth'])->group(function() {
         // フォローに関するルート
         Route::post('/follow/{userId}', [UserProfileController::class, 'follow'])->name('follow');
         Route::post('/unfollow/{userId}', [UserProfileController::class, 'unfollow'])->name('unfollow');
-        Route::get('/following', [UserProfileController::class, 'following'])->name('following');
-        Route::get('/followers', [UserProfileController::class, 'followers'])->name('followers');
+        Route::get('/following', [UserProfileController::class, 'showFollowing'])->name('following');
+        Route::get('/followers', [UserProfileController::class, 'showFollowers'])->name('followers');
     });
 
 });

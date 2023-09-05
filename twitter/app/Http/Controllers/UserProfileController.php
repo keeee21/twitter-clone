@@ -101,7 +101,7 @@ class UserProfileController extends Controller
      *
      * @return View
      */
-    public function following(): View
+    public function showFollowing(): View
     {
         $user = Auth::user();
         $users = $user->following()->simplePaginate(10);
@@ -113,7 +113,7 @@ class UserProfileController extends Controller
      *
      * @return View
      */
-    public function followers(): View
+    public function showFollowers(): View
     {
         $user = Auth::user();
         $users = $user->followers()->simplePaginate(10);
