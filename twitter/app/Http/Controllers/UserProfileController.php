@@ -96,4 +96,28 @@ class UserProfileController extends Controller
         return redirect()->back()->with('success', 'ユーザーのフォローを解除しました');
     }
 
+    /**
+     * フォローしているユーザー一覧ページを表示する
+     *
+     * @return View
+     */
+    public function following(): View
+    {
+        $user = Auth::user();
+        $users = $user->following()->simplePaginate(10);
+        return view('mypage.following', ['users' => $users]);
+    }
+
+    /**
+     * フォロワー一覧ページを表示する
+     *
+     * @return View
+     */
+    public function followers(): View
+    {
+        $user = Auth::user();
+        $users = $user->followers()->simplePaginate(10);
+        return view('mypage.followers', ['users' => $users]);
+    }
+
 }
