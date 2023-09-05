@@ -105,8 +105,7 @@ class UserProfileController extends Controller
      */
     public function showFollows(): View
     {
-        $user = Auth::user();
-        $users = $user->following()->simplePaginate(self::USERS_PER_PAGE);
+        $users = Auth::user()->following()->simplePaginate(self::USERS_PER_PAGE);
         return view('mypage.following', compact('users'));
     }
 
@@ -117,8 +116,7 @@ class UserProfileController extends Controller
      */
     public function showFollowers(): View
     {
-        $user = Auth::user();
-        $users = $user->followers()->simplePaginate(self::USERS_PER_PAGE);
+        $users = Auth::user()->followers()->simplePaginate(self::USERS_PER_PAGE);
         return view('mypage.followers', ['users' => $users]);
     }
 }
