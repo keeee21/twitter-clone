@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id()->comment('ユーザーID');
             $table->string("display_name")->comment('表示名')->nullable(false);
             $table->string("email")->comment('メールアドレス')->nullable(false)->unique();;
-            $table->integer('birthday')->comment('誕生日')->nullable(false);;
+            $table->date('birthday')->comment('誕生日')->nullable(false);;
             $table->string('hash_password')->comment('ハッシュパスワード')->nullable(false);;
             $table->text('profile_image')->comment('プロフィール画像');
             $table->text('header_image')->comment('ヘッダー画像');
