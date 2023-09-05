@@ -22,4 +22,9 @@ class User extends Model
         'bio_text',
         'last_login_date',
     ];
+
+    protected $hidden = [
+        'hash_password',
+        'remember_token',
+    ];
 }
