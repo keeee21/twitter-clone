@@ -12,12 +12,12 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                            <label for="display_name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="display_name" type="text" class="form-control @error('display_name') is-invalid @enderror" name="display_name" value="{{ old('display_name') }}" required autocomplete="display_name" autofocus>
 
-                                @error('name')
+                                @error('display_name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -60,6 +60,23 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             </div>
                         </div>
+
+                        <div class="row mb-3">
+                            <label for="birthday" class="col-md-4 col-form-label text-md-end">{{ __('Birthday') }}</label>
+                        
+                            <div class="col-md-6">
+                                <input id="birthday" type="date" class="form-control" name="birthday" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="user_name" class="col-md-4 col-form-label text-md-end">{{ __('User Name') }}</label>
+                        
+                            <div class="col-md-6">
+                                <input id="user_name" type="text" class="form-control" name="user_name" required>
+                            </div>
+                        </div>                        
+                        
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
