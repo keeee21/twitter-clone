@@ -10,6 +10,8 @@ use Illuminate\Http\RedirectResponse;
 
 class UserProfileController extends Controller
 {
+    const USERS_PER_PAGE = 20;
+
     /**
      * ユーザー一覧ページを表示する
      *
@@ -17,7 +19,7 @@ class UserProfileController extends Controller
      */
     public function index(): View
     {
-        $users = User::paginate(10);
+        $users = User::paginate(self::USERS_PER_PAGE);
         return view('mypage.index', ['users' => $users]);
     }
 
@@ -91,9 +93,30 @@ class UserProfileController extends Controller
      */
     public function unfollow(int $userId): RedirectResponse
     {
-        $authUser = Auth::user();
-        $authUser->unfollow($userId);
+        Auth::user()->unfollow($userId);
         return redirect()->back()->with('success', 'ユーザーのフォローを解除しました');
     }
 
+
+    /**
+     * フォローしているユーザー一覧ページを表示する
+     *
+     * @return View
+     */
+    public function showFollows(): View
+    {
+        $users = Auth::user()->following()->simplePaginate(self::USERS_PER_PAGE);
+        return view('mypage.following', compact('users'));
+    }
+
+    /**
+     * フォロワー一覧ページを表示する
+     *
+     * @return View
+     */
+    public function showFollowers(): View
+    {
+        $users = Auth::user()->followers()->simplePaginate(self::USERS_PER_PAGE);
+        return view('mypage.followers', ['users' => $users]);
+    }
 }

@@ -19,23 +19,37 @@
         <p><strong>名前:</strong> {{ $authUserMeta->name }}</p>
         <p><strong>メールアドレス:</strong> {{ $authUserMeta->email }}</p>
         <p><strong>アカウント制作日:</strong> {{ $authUserMeta->created_at }}</p>
+        <p>
+            <strong>
+                <a href="{{ route('mypage.followers') }}">
+                    フォロワー: {{ $authUserMeta->followers->count() }}
+                </a>
+            </strong>
+            <span class="mx-4"></span>
+            <strong>
+                <a href="{{ route('mypage.following') }}">
+                    フォロー: {{ $authUserMeta->following->count() }}
+                </a>
+            </strong>
+        </p>
     </div>
 </div>
 
 <div class="d-flex align-items-center">
-    <!-- btn-customクラスを追加 -->
     <a href="{{ route('mypage.edit') }}" class="btn btn-primary btn-custom mb-3">ユーザー情報を編集</a>
 
     <form action="{{ route('mypage.destroy') }}" method="post" onsubmit="
     return confirm('⚠️本当にアカウントを削除してもよろしいですか？⚠️');">
         @csrf
         @method('DELETE')
-        <!-- btn-customクラスを追加 -->
+
         <button type="submit" class="btn btn-danger btn-custom mb-3">アカウントを削除する</button>
     </form>
 
-    <!-- btn-customクラスを追加 -->
-    <a href="{{ route('tweets.index') }}" class="btn btn-success btn-custom mb-3">ツイート一覧に戻る</a>
+    <a href="{{ route('tweets.index') }}" class="btn btn-success btn-custom mb-3">ツイート一覧</a>
+
+    <a href="{{ route('mypage.index') }}" class="btn btn-secondary btn-custom mb-3">ユーザー 一覧</a>
+
 </div>
 
 @endsection

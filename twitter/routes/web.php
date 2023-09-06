@@ -23,7 +23,7 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function() {
 
-    // Tweets Routes
+    // ツイート機能に関するルート
     Route::group(['prefix' => 'tweets', 'as' => 'tweets.'], function() {
         Route::get('/', [TweetController::class, 'index'])->name('index');
         Route::get('/create', [TweetController::class, 'create'])->name('create');
@@ -34,7 +34,7 @@ Route::middleware(['auth'])->group(function() {
         Route::delete('/{tweet}', [TweetController::class, 'destroy'])->name('destroy');
     });
 
-    // MyPage Routes
+    // マイページに関するルート
     Route::group(['prefix' => 'mypage', 'as' => 'mypage.'], function() {
         Route::get('/edit', [UserProfileController::class, 'edit'])->name('edit');
         Route::get('/', [UserProfileController::class, 'index'])->name('index');
@@ -43,9 +43,12 @@ Route::middleware(['auth'])->group(function() {
         Route::delete('/', [UserProfileController::class, 'destroy'])->name('destroy');
         Route::get('/users', [UserProfileController::class, 'index'])->name('users.index');
 
-        // Follow/Unfollow Routes
+        // フォローに関するルート
         Route::post('/follow/{userId}', [UserProfileController::class, 'follow'])->name('follow');
         Route::post('/unfollow/{userId}', [UserProfileController::class, 'unfollow'])->name('unfollow');
+        Route::get('/following', [UserProfileController::class, 'showFollows'])->name('following');
+        Route::get('/followers', [UserProfileController::class, 'showFollowers'])->name('followers');
     });
 
 });
+
