@@ -65,7 +65,13 @@
                             <label for="birthday" class="col-md-4 col-form-label text-md-end">{{ __('Birthday') }}</label>
                         
                             <div class="col-md-6">
-                                <input id="birthday" type="date" class="form-control" name="birthday" required>
+                                <input id="birthday" type="date" class="form-control @error('birthday') is-invalid @enderror" name="birthday" value="{{ old('birthday') }}" required>
+                            
+                                @error('birthday')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
 
@@ -73,7 +79,13 @@
                             <label for="user_name" class="col-md-4 col-form-label text-md-end">{{ __('User Name') }}</label>
                         
                             <div class="col-md-6">
-                                <input id="user_name" type="text" class="form-control" name="user_name" required>
+                                <input id="user_name" type="text" class="form-control @error('user_name') is-invalid @enderror" name="user_name" value="{{ old('user_name') }}" required>
+                               
+                                @error('user_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                             </div>
                         </div>                        
                         
