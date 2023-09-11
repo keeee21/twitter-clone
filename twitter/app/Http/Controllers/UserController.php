@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\View\View;
 
 class UserController extends Controller
 {
-    // ユーザー詳細
-    public function show($id)
+    /**
+     * マイページの表示
+     *
+     * @return View
+     *
+     */
+    public function findByUserId($id): View
     {
         $user = User::find($id);
 
-        if (!$user) {
-            abort(404); // ユーザーが見つからない場合は404エラーを表示
-        }
-
-        return view('users.show', compact('user'));
+        return view('user.show', compact('user'));
     }
 }

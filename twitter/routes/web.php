@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +22,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/users/{id}', [ App\Http\Controllers\UserController::class,'show'])->name('users.show');
+// ユーザー詳細
+Route::get('/user/{id}', [App\Http\Controllers\UserController::class,'findByUserId'])->name('findByUserId');
+
+
