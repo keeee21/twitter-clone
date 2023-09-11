@@ -12,15 +12,23 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'users'; //テーブル名
+    
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'display_name',
         'email',
-        'password',
+        'birthday',
+        'hash_password',
+        'profile_image',
+        'header_image',
+        'user_name',
+        'bio_text',
+        'last_login_date',
     ];
 
     /**
@@ -29,7 +37,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        'hash_password',
         'remember_token',
     ];
 
@@ -53,5 +61,10 @@ class User extends Authenticatable
         $user = $this->find($id);
 
         return $user;
+
+    public function getAuthPassword()
+    {
+        return $this->{"hash_password"};
+
     }
 }
