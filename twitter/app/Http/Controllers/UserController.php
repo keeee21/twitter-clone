@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\View\View;
+use App\Http\Requests\UserRequest;
+use Illuminate\Http\RedirectResponse;
+
 
 class UserController extends Controller
 {
@@ -22,5 +24,33 @@ class UserController extends Controller
         $user = $userModel->findByUserId($id);
 
         return view('user.show', compact('user'));
+    }
+
+    /**
+     * ユーザー編集画面を表示するビューを返す
+     * 
+     * @return View
+     * 
+     */
+    public function edit(): View
+    {
+        $user = Auth::user();
+
+        return view('user.edit', compact('user'));
+    }
+
+    /**
+     * 更新内容を受け取り、ユーザー情報を更新する
+     * 
+     * @param  UserRequest  $request
+     * @return RedirectResponse
+     * 
+     */
+    public function update(UserRequest $request, int $id): RedirectResponse
+    {   
+        $user = new User();
+        $user->updateUser($request,$id);
+
+        return redirect()->route('user.show', $id)->with('success', '更新しました');
     }
 }
