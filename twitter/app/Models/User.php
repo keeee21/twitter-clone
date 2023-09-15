@@ -41,4 +41,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // 指定されたIDのユーザー情報を取得するためのメソッド
+    public function findByUserId($id){
+        return User::find($id);
+    }
 }
