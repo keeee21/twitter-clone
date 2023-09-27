@@ -42,8 +42,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // 指定されたIDのユーザー情報を取得するためのメソッド
-    public function findByUserId($id){
+    /**
+     * ユーザー詳細情報を取得
+     *
+     * @param [type] $id
+     * @return User|null
+     */
+    public function findByUserId(int $id):User|null
+    {
         return User::find($id);
     }
-}
+}  
+

@@ -22,15 +22,14 @@ class UserPolicy
     }
 
     /**
-     * Determine whether the user can view the model.
+     * ユーザーがモデルを表示できるかどうかを判断する
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, User $model)
+    public function view(User $user, User $model):Response|bool
     {
-        Log::debug($model);
         return $user->id === $model->id;
     }
 
