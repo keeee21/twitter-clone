@@ -41,4 +41,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-}
+
+    /**
+     * ユーザー詳細情報を取得
+     *
+     * @param [type] $id
+     * @return User|null
+     */
+    public function findByUserId(int $id):User|null
+    {
+        return User::find($id);
+    }
+}  
+
