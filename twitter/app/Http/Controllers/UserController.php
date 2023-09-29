@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -22,5 +24,29 @@ class UserController extends Controller
         $this->authorize('view', $user_detail);
         
         return view('user/show',['user_detail' => $user_detail]);
+    }
+    /**
+     * ユーザー情報編集画面への移動
+     *
+     * @return View
+     */
+    public function userEditPageDisplay():View
+    {
+        $user = Auth::user();
+
+        return view('user/edit',compact('user'));
+    }
+    /**
+     * ユーザー情報編集
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function update(Request $request):RedirectResponse
+    {
+        $user = new User();
+        $user->userEdit($request);
+
+        return redirect()->route('show',['id' => Auth::id()]);
     }
 }
