@@ -24,7 +24,7 @@ class UserController extends Controller
         $user_detail = $user->findByUserId($request->route('id'));
         $this->authorize('view', $user_detail);
         
-        return view('user/show',['user_detail' => $user_detail]);
+        return view('user.show',['user_detail' => $user_detail]);
     }
     /**
      * ユーザー情報編集画面への移動
@@ -35,7 +35,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        return view('user/edit',compact('user'));
+        return view('user.edit',compact('user'));
     }
     /**
      * ユーザー情報編集
@@ -46,7 +46,9 @@ class UserController extends Controller
     public function update(UserEditRequest $request):RedirectResponse
     {
         $user = new User();
-        $user->userEdit($request);
+        $name = $request->name;
+        $email = $request->email;
+        $user->userEdit($name,$email);
 
         return redirect()->route('show',['id' => Auth::id()]);
     }

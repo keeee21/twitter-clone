@@ -62,11 +62,11 @@ class User extends Authenticatable
      * @param Request $request
      * @return void
      */    
-    public function userEdit(Request $request)
+    public function userEdit(string $name, string $email):Void
     {
         $user = Auth::user();
-        $user->name = $request->name;
-        $user->email = $request->email;
+        $user->name = $name;
+        $user->email = $email;
         $user->save();
     }
 }  
