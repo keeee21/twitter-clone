@@ -43,6 +43,12 @@
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
+                            <a class="dropdown-item" href="{{ route('show',['id' => Auth::id()]) }}">
+                                {{ "プロフィール" }}
+                            </a>
+                            <form action="{{ route('show',['id' => Auth::id()]) }}" method="POST" class="d-none">
+                                @csrf
+                            </form>
                         </div>
                     </li>
                 @endguest
