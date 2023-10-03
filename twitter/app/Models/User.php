@@ -48,10 +48,10 @@ class User extends Authenticatable
     /**
      * ユーザー詳細情報を取得
      *
-     * @param [type] $id
+     * @param int $id
      * @return User|null
      */
-    public function findByUserId(int $id):User|null
+    public function detail(int $id):User|null
     {
         return User::find($id);
     }
@@ -59,10 +59,11 @@ class User extends Authenticatable
     /**
      * ユーザー情報の編集
      *
-     * @param string $name , $email
+     * @param string $name
+     * @param string $email
      * @return void
      */    
-    public function edit(string $name, string $email):void
+    public function updateData(string $name, string $email):void
     {
         $user = Auth::user();
         $user->name = $name;

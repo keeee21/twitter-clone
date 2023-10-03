@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 <div class="card text-center">
                     <div class="card-body">
-                        <form method="post" action="{{ route('edit') }}">
+                        <form method="post" action="{{ route('update') }}">
                             @csrf
                             @method('put')
                             @error('name')
@@ -19,7 +19,7 @@
                             <p class="card-text">メール：<input type="email" name="email" value="{{ $user->email }}" ></p>
                             <input type="submit" value="保存">
                         </form>
-                        <form method="get" action="{{ route('show',['id' => Auth::id()]) }}">
+                        <form method="get" action="{{ route('detail',['id' => Auth::id()]) }}">
                             @csrf
                             <input type="submit" value="キャンセル">
                         </form>

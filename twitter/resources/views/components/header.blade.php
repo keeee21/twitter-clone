@@ -35,18 +35,15 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('detail',['id' => Auth::id()]) }}">
+                                {{ "プロフィール" }}
+                            </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">
                                 {{ "ログアウト" }}
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                            <a class="dropdown-item" href="{{ route('show',['id' => Auth::id()]) }}">
-                                {{ "プロフィール" }}
-                            </a>
-                            <form action="{{ route('show',['id' => Auth::id()]) }}" method="POST" class="d-none">
                                 @csrf
                             </form>
                         </div>

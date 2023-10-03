@@ -18,10 +18,10 @@ class UserController extends Controller
      * @param Request $request
      * @return View
      */
-    public function findByUserId(Request $request):View
+    public function detail(Request $request):View
     {
         $user = new User();
-        $user_detail = $user->findByUserId($request->route('id'));
+        $user_detail = $user->detail($request->route('id'));
         $this->authorize('view', $user_detail);
         
         return view('user.show',['user_detail' => $user_detail]);
@@ -32,7 +32,7 @@ class UserController extends Controller
      *
      * @return View
      */
-    public function editProfile():View
+    public function edit():View
     {
         $user = Auth::user();
 
@@ -50,8 +50,8 @@ class UserController extends Controller
         $user = new User();
         $name = $request->name;
         $email = $request->email;
-        $user->edit($name,$email);
+        $user->updateData($name,$email);
 
-        return redirect()->route('show',['id' => Auth::id()]);
+        return redirect()->route('detail',['id' => Auth::id()]);
     }
 }

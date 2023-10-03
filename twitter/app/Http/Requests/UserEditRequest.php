@@ -13,7 +13,7 @@ class UserEditRequest extends FormRequest
      */
     public function authorize():bool
     {
-        return $this->path() == 'edit';
+        return $this->path() == 'update';
     }
 
     /**
