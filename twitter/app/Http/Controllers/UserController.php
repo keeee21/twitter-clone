@@ -21,6 +21,20 @@ class UserController extends Controller
         $user_detail = $user->findByUserId($request->route('id'));
         $this->authorize('view', $user_detail);
         
-        return view('user/show',['user_detail' => $user_detail]);
+        return view('user/show',compact('user_detail'));
+    }
+
+    /**
+     * ユーザー一覧の表示
+     *
+     * @return View
+     */
+    public function getAll():View
+    {
+        $user = new User();
+        $users = $user->getAll();
+        //dd($users);
+        
+        return view('user/index',compact('users'));
     }
 }

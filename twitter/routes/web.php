@@ -20,7 +20,8 @@ Route::get('/', function () {return view('welcome');})->name('Welcome');
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('users/{id}',[UserController::class, 'findByUserId'])->name('show');
+    Route::get('users/{id}', [UserController::class, 'findByUserId'])->name('show');
+    Route::get('users/', [UserController::class, 'getAll'])->name('index');
 });
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
