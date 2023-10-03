@@ -26,21 +26,23 @@ class UserController extends Controller
         
         return view('user.show',['user_detail' => $user_detail]);
     }
+
     /**
      * ユーザー情報編集画面への移動
      *
      * @return View
      */
-    public function userEditPageDisplay():View
+    public function editProfile():View
     {
         $user = Auth::user();
 
         return view('user.edit',compact('user'));
     }
+
     /**
      * ユーザー情報編集
      *
-     * @param Request $request
+     * @param UserEditRequest $request
      * @return RedirectResponse
      */
     public function update(UserEditRequest $request):RedirectResponse
@@ -48,7 +50,7 @@ class UserController extends Controller
         $user = new User();
         $name = $request->name;
         $email = $request->email;
-        $user->userEdit($name,$email);
+        $user->edit($name,$email);
 
         return redirect()->route('show',['id' => Auth::id()]);
     }

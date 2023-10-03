@@ -13,17 +13,13 @@ class UserEditRequest extends FormRequest
      */
     public function authorize():bool
     {
-        if ($this->path() == 'edit') {
-            return true;
-        }else {
-            return false;
-        }
+        return $this->path() == 'edit';
     }
 
     /**
-     * ユーザー情報編集におけるバリデーション
+     * ユーザー編集におけるバリデーション
      *
-     * @return array<string, mixed>
+     * @return array
      */
     public function rules():array
     {
@@ -33,7 +29,12 @@ class UserEditRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    /**
+     * ビューで表示されるメッセージ
+     *
+     * @return array
+     */
+    public function messages():array
     {
         return [
             'name.required' => '名前は必須項目です。必ず入力してください',

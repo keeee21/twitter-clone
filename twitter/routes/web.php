@@ -21,9 +21,9 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
     // ユーザー詳細（プロフィール）表示
-    Route::get('users/{id}',[UserController::class, 'findByUserId'])->name('show');
+    Route::get('users/{id}', [UserController::class, 'findByUserId'])->name('show');
     //編集ページ表示
-    Route::get('edit',[UserController::class, 'userEditPageDisplay'])->name('userEditDisplay');
+    Route::get('edit', [UserController::class, 'editProfile'])->name('editProfile');
     //ユーザー情報編集
     Route::put('edit', [UserController::class, 'update'])->name('edit');
 });

@@ -8,7 +8,7 @@
                     <div class="card-body">
                         <form method="post" action="{{ route('edit') }}">
                             @csrf
-                            @method('PUT')
+                            @method('put')
                             @error('name')
                                 <h5>{{ $message }}</h5>
                             @enderror
