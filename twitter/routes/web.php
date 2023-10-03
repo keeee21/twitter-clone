@@ -21,6 +21,7 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('users/{id}',[UserController::class, 'findByUserId'])->name('show');
+    Route::delete('users/delete',[UserController::class, 'delete'])->name('delete');
 });
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
