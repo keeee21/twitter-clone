@@ -11,7 +11,6 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    
     /**
      * ユーザー詳細情報を取得
      *
@@ -40,7 +39,7 @@ class UserController extends Controller
     }
 
     /**
-     * ユーザー情報編集
+     * ユーザー情報を編集
      *
      * @param UserEditRequest $request
      * @return RedirectResponse
@@ -53,5 +52,18 @@ class UserController extends Controller
         $user->updateData($name,$email);
 
         return redirect()->route('detail',['id' => Auth::id()]);
+    }
+
+    /**
+     * ユーザー情報を削除
+     *
+     * @return View
+     */
+    public function delete():View
+    {
+        $user = new User();
+        $user->deleteByUserID(Auth::id());
+
+        return view('welcome');
     }
 }

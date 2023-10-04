@@ -13,6 +13,11 @@
                             @csrf
                             <input type="submit" value="編集">
                         </form>
+                        <form method="post" action="{{ route('delete') }}">
+                            @csrf
+                            @method('delete')
+                            <input type="submit" value="削除">
+                        </form>
                     </div>
                 </div>
             </div>
