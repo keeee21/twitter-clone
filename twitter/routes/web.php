@@ -23,12 +23,12 @@ Route::get('/home', [HomeController::class, 'home'])->name('home');
 
 //ユーザー認証
 Route::group(['middleware' => 'auth'], function () {
-    // ユーザー詳細（プロフィール）表示
+    //ユーザー詳細（プロフィール）表示
     Route::get('detail/{id}', [UserController::class, 'detail'])->name('detail');
     //編集ページ表示
     Route::get('edit', [UserController::class, 'edit'])->name('edit');
     //ユーザー情報編集
     Route::put('update', [UserController::class, 'update'])->name('update');
     //ユーザー削除
-    Route::delete('users/delete',[UserController::class, 'delete'])->name('delete');
+    Route::delete('delete',[UserController::class, 'delete'])->name('delete');
 });

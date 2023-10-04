@@ -39,7 +39,7 @@ class UserController extends Controller
     }
 
     /**
-     * ユーザー情報編集
+     * ユーザー情報を編集
      *
      * @param UserEditRequest $request
      * @return RedirectResponse

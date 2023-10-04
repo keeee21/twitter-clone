@@ -57,7 +57,7 @@ class User extends Authenticatable
     {
         return User::find($id);
     }
-    
+
     /**
      * ユーザー情報の編集
      *
@@ -79,7 +79,7 @@ class User extends Authenticatable
      * @param int $id
      * @return void
      */
-    public function deleteByUserID(int $id)
+    public function deleteByUserID(int $id):void
     {
         $this->destroy($id);
     }
