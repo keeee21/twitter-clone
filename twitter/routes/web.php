@@ -20,7 +20,12 @@ Route::get('/', function () {return view('welcome');})->name('Welcome');
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('users/{id}',[UserController::class, 'findByUserId'])->name('show');
+    // ユーザー詳細（プロフィール）表示
+    Route::get('detail/{id}', [UserController::class, 'detail'])->name('detail');
+    //編集ページ表示
+    Route::get('edit', [UserController::class, 'edit'])->name('edit');
+    //ユーザー情報編集
+    Route::put('update', [UserController::class, 'update'])->name('update');
 });
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'home'])->name('home');
