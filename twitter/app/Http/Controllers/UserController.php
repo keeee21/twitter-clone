@@ -51,7 +51,7 @@ class UserController extends Controller
         $email = $request->email;
         $user->updateData($name,$email);
 
-        return redirect()->route('detail',['id' => Auth::id()]);
+        return redirect()->route('user.detail',['id' => Auth::id()]);
     }
 
     /**

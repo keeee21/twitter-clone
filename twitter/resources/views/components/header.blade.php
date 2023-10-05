@@ -34,10 +34,10 @@
                             {{ Auth::user()->name }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('detail',['id' => Auth::id()]) }}">
+                            <a class="dropdown-item" href="{{ route('user.detail',['id' => Auth::id()]) }}">
                                 {{ "プロフィール" }}
                             </a>
-                            <a class="dropdown-item" href="{{ route('index') }}">
+                            <a class="dropdown-item" href="{{ route('user.index') }}">
                                 {{ "ユーザー一覧" }}
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
