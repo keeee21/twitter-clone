@@ -19,9 +19,18 @@ Route::get('/', function () {return view('welcome');})->name('Welcome');
 
 Auth::routes();
 
+Route::get('/home', [HomeController::class, 'home'])->name('home');
+
+//ユーザー認証
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('users/{id}', [UserController::class, 'findByUserId'])->name('show');
+    //ユーザー詳細（プロフィール）表示
+    Route::get('detail/{id}', [UserController::class, 'detail'])->name('detail');
+    //編集ページ表示
+    Route::get('edit', [UserController::class, 'edit'])->name('edit');
+    //ユーザー情報編集
+    Route::put('update', [UserController::class, 'update'])->name('update');
+    //ユーザー削除
+    Route::delete('delete',[UserController::class, 'delete'])->name('delete');
+    //ユーザー一覧
     Route::get('users/', [UserController::class, 'getAll'])->name('index');
 });
-
-Route::get('/home', [HomeController::class, 'index'])->name('home');
