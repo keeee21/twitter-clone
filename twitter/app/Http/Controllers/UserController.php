@@ -23,7 +23,7 @@ class UserController extends Controller
         $user_detail = $user->detail($request->route('id'));
         $this->authorize('view', $user_detail);
         
-        return view('user/show',compact('user_detail'));
+        return view('user.show',compact('user_detail'));
     }
 
     /**
@@ -72,12 +72,11 @@ class UserController extends Controller
      *
      * @return View
      */
-    public function getAll():View
+    public function index():View
     {
         $user = new User();
-        $users = $user->getAll();
-        //dd($users);
+        $users = $user->index();
         
-        return view('user/index',compact('users'));
+        return view('user.index',compact('users'));
     }
 }

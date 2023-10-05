@@ -32,5 +32,5 @@ Route::group(['middleware' => 'auth'], function () {
     //ユーザー削除
     Route::delete('delete',[UserController::class, 'delete'])->name('delete');
     //ユーザー一覧
-    Route::get('users/', [UserController::class, 'getAll'])->name('index');
+    Route::get('index', [UserController::class, 'index'])->name('index');
 });
