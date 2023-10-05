@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TweetController;
 use App\Http\Controllers\HomeController;
 
 /*
@@ -21,6 +22,13 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('users/{id}',[UserController::class, 'findByUserId'])->name('show');
+
+    Route::group(['prefix' => 'tweet', 'as' => 'tweet.'], function(){
+        Route::get('/', [TweetController::class, 'tweet'])->name('tweet');
+        Route::get('/create', [TweetController::class, 'create'])->name('create');
+    });
 });
+
+
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
