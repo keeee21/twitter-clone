@@ -23,7 +23,7 @@ class UserController extends Controller
         $user_detail = $user->detail($request->route('id'));
         $this->authorize('view', $user_detail);
         
-        return view('user.show',['user_detail' => $user_detail]);
+        return view('user.show',compact('user_detail'));
     }
 
     /**
@@ -51,7 +51,7 @@ class UserController extends Controller
         $email = $request->email;
         $user->updateData($name,$email);
 
-        return redirect()->route('detail',['id' => Auth::id()]);
+        return redirect()->route('user.detail',['id' => Auth::id()]);
     }
 
     /**
@@ -65,5 +65,18 @@ class UserController extends Controller
         $user->deleteByUserID(Auth::id());
 
         return view('welcome');
+    }
+
+    /**
+     * ユーザー一覧の表示
+     *
+     * @return View
+     */
+    public function index():View
+    {
+        $user = new User();
+        $users = $user->index();
+        
+        return view('user.index',compact('users'));
     }
 }

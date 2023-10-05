@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -58,7 +59,7 @@ class User extends Authenticatable
         return User::find($id);
     }
 
-    /**
+    /** 
      * ユーザー情報の編集
      *
      * @param string $name
@@ -82,6 +83,16 @@ class User extends Authenticatable
     public function deleteByUserID(int $id):void
     {
         $this->destroy($id);
+    }
+    
+    /**
+     * ユーザー一覧の表示
+     *
+     * @return LengthAwarePaginator
+     */
+    public function index():LengthAwarePaginator
+    {
+        return User::whereNull('deleted_at')->orderBy('id', 'asc')->paginate(5);
     }
 }  
 
