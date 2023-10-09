@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -58,14 +59,29 @@ class User extends Authenticatable
         return User::find($id);
     }
 
+    /** 
+     * ユーザー情報の編集
+     *
+     * @param string $name
+     * @param string $email
+     * @return void
+     */    
+    public function updateData(string $name, string $email):void
+    {
+        $user = Auth::user();
+        $user->name = $name;
+        $user->email = $email;
+        $user->save();
+    }
+    
     /**
      * ユーザー一覧の表示
      *
-     * @return Collection
+     * @return LengthAwarePaginator
      */
-    public function getAll():Collection
+    public function index():LengthAwarePaginator
     {
-        return User::whereNull('deleted_at')->orderBy('id', 'asc')->get();
+        return User::whereNull('deleted_at')->orderBy('id', 'asc')->paginate(5);
     }
 }  
 

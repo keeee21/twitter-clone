@@ -24,19 +24,24 @@ Route::get('/home', [HomeController::class, 'home'])->name('home');
 
 //ユーザー認証
 Route::group(['middleware' => 'auth'], function () {
-    //ユーザー詳細（プロフィール）表示
-    Route::get('detail/{id}', [UserController::class, 'detail'])->name('detail');
-    //編集ページ表示
-    Route::get('edit', [UserController::class, 'edit'])->name('edit');
-    //ユーザー情報編集
-    Route::put('update', [UserController::class, 'update'])->name('update');
-    //ユーザー削除
-    Route::delete('delete',[UserController::class, 'delete'])->name('delete');
-
+    //ユーザー機能
+    Route::group(['prefix' => 'user','as' => 'user.'], function() {
+        //ユーザー詳細（プロフィール）表示
+        Route::get('detail/{id}', [UserController::class, 'detail'])->name('detail');
+        //編集ページ表示
+        Route::get('edit', [UserController::class, 'edit'])->name('edit');
+        //ユーザー情報編集
+        Route::put('update', [UserController::class, 'update'])->name('update');
+        //ユーザー削除
+        Route::delete('delete',[UserController::class, 'delete'])->name('delete');
+        //ユーザー一覧
+        Route::get('index', [UserController::class, 'index'])->name('index');
+    });
+    //ツイート機能
     Route::group(['prefix' => 'tweet', 'as' => 'tweet.'], function(){
         //ツイートページ表示
         Route::get('/', [TweetController::class, 'tweet'])->name('tweet');
-        //ツイート
+        //ツイート投稿作成
         Route::post('/create', [TweetController::class, 'create'])->name('create');
     });
 });

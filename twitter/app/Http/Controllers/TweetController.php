@@ -2,17 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTweetRequest;
 use App\Models\Tweet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class TweetController extends Controller
 {
-    public function tweet(){
+    /**
+     * ツイート投稿ページ表示
+     *
+     * @return View
+     */
+    public function tweet():View
+    {
         return view('tweet.create');
     }
     
-    public function create(Request $request)
+    /**
+     * ツイート投稿作成機能
+     *
+     * @param CreateTweetRequest $request
+     * @return View
+     */
+    public function create(CreateTweetRequest $request):View
     {
         $tweets = new Tweet();
         $tweet = $request->tweet;

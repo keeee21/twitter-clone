@@ -8,6 +8,9 @@
                     <div class="card-body">
                         <form method="post" action="{{ route('tweet.create') }}">
                             @csrf
+                            @error('tweet')
+                                <h5>{{ $message }}</h5>
+                            @enderror
                             <div class="card-text">
                                 <input type="textarea" name="tweet">
                             </div>

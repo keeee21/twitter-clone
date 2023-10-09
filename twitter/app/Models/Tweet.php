@@ -10,6 +10,13 @@ class Tweet extends Model
 {
     use HasFactory;
 
+    /**
+     * ツイート投稿作成機能
+     *
+     * @param string $tweet
+     * @param int $user_id
+     * @return void
+     */
     public function create(string $tweet, int $user_id)
     {
         $this->tweet = $tweet;
