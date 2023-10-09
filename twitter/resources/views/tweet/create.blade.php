@@ -9,7 +9,7 @@
                         <form method="post" action="{{ route('tweet.create') }}">
                             @csrf
                             <div class="card-text">
-                                <input type="textarea" name="tweet" value="いまどうしてる？">
+                                <input type="textarea" name="tweet">
                             </div>
                             <input type="submit" value="保存">
                         </form>

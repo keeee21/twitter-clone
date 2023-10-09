@@ -34,7 +34,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('delete',[UserController::class, 'delete'])->name('delete');
 
     Route::group(['prefix' => 'tweet', 'as' => 'tweet.'], function(){
+        //ツイートページ表示
         Route::get('/', [TweetController::class, 'tweet'])->name('tweet');
-        Route::get('/create', [TweetController::class, 'create'])->name('create');
+        //ツイート
+        Route::post('/create', [TweetController::class, 'create'])->name('create');
     });
 });
