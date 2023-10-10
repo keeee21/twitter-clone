@@ -63,4 +63,21 @@ class TweetController extends Controller
 
         return view('tweet.show', compact('tweet'));
     }
+
+    /**
+     * ツイート編集画面の表示
+     *
+     * @return View
+     */
+    public function edit():View
+    {
+        
+
+        return view('tweet.edit');
+    }
+
+    public function update(CreateTweetRequest $request)
+    {
+
+    }
 }

@@ -9,6 +9,9 @@
                         <h5 class="card-title">ツイート詳細</h5>
                         <p class="card-text">ユーザー名：{{ $tweet->user->name }}</p>
                         <p class="card-text">ツイート内容：{{ $tweet->tweet }}</p>
+                        <form method="get" action="{{ route('tweet.edit') }}">
+                            <input type="submit" value="編集">
+                        </form>
                         <form method="get" action="{{ route('tweet.index') }}">
                             <input type="submit" value="戻る">
                         </form>

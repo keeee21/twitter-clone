@@ -25,7 +25,8 @@ Route::get('/home', [HomeController::class, 'home'])->name('home');
 //ユーザー認証
 Route::group(['middleware' => 'auth'], function () {
     //ユーザー機能
-    Route::group(['prefix' => 'user','as' => 'user'], function() {
+    Route::group(['prefix' => 'user','as' => 'user'], function()
+    {
         //ユーザー詳細（プロフィール）表示
         Route::get('detail/{id}', [UserController::class, 'detail'])->name('.detail');
         //編集ページ表示
@@ -38,7 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('index', [UserController::class, 'index'])->name('.index');
     });
     //ツイート機能
-    Route::group(['prefix' => 'tweet', 'as' => 'tweet'], function(){
+    Route::group(['prefix' => 'tweet', 'as' => 'tweet'], function()
+    {
         //ツイートページ表示
         Route::get('/', [TweetController::class, 'tweet'])->name('');
         //ツイート投稿作成
@@ -47,5 +49,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('index', [TweetController::class, 'index'])->name('.index');
         //ツイート詳細表示
         Route::get('detail', [TweetController::class, 'detail'])->name('.detail');
+        //ツイート編集ページ表示
+        Route::get('edit', [TweetController::class, 'edit'])->name('.edit');
+        //ツイート編集
+        Route::put('update', [TweetController::class, 'update'])->name('.update');
     });
 });
