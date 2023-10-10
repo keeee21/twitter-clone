@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TweetController;
 use App\Http\Controllers\HomeController;
 
 /*
@@ -22,7 +23,8 @@ Auth::routes();
 Route::get('/home', [HomeController::class, 'home'])->name('home');
 
 //ユーザー認証
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'auth'], function () {
+    //ユーザー機能
     Route::group(['prefix' => 'user','as' => 'user.'], function() {
         //ユーザー詳細（プロフィール）表示
         Route::get('detail/{id}', [UserController::class, 'detail'])->name('detail');
@@ -34,5 +36,14 @@ Route::group(['middleware' => 'auth'], function() {
         Route::delete('delete',[UserController::class, 'delete'])->name('delete');
         //ユーザー一覧
         Route::get('index', [UserController::class, 'index'])->name('index');
+    });
+    //ツイート機能
+    Route::group(['prefix' => 'tweet', 'as' => 'tweet.'], function(){
+        //ツイートページ表示
+        Route::get('/', [TweetController::class, 'tweet'])->name('tweet');
+        //ツイート投稿作成
+        Route::post('create', [TweetController::class, 'create'])->name('create');
+        //ツイートの一覧表示
+        Route::get('index', [TweetController::class, 'index'])->name('index');
     });
 });
