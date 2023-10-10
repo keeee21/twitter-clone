@@ -9,10 +9,12 @@
                         <h5 class="card-title">ツイート一覧</h5>
                         @foreach ($tweets as $tweet)
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    {{ $tweet->user->name }}
-                                    {{ $tweet->tweet }}
-                                </li>
+                                <a href="{{ route('tweet.detail', ['id' => $tweet->id]) }}">
+                                    <li class="list-group-item">
+                                        {{ $tweet->user->name }}
+                                        {{ $tweet->tweet }}
+                                    </li>
+                                </a>
                             </ul>
                         @endforeach
                         {{ $tweets->links() }}
