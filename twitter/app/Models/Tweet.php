@@ -45,4 +45,15 @@ class Tweet extends Model
     {
         return $this->with('user')->paginate(5);
     }
+    
+    /**
+     * ツイート詳細表示
+     *
+     * @param int $tweet_id
+     * @return Tweet
+     */
+    public function detail(int $tweet_id):Tweet
+    {
+        return $this->with('user')->find($tweet_id);
+    }
 }

@@ -48,4 +48,19 @@ class TweetController extends Controller
         
         return view('tweet.index',compact('tweets'));
     }
+
+    /**
+     * ツイート詳細表示
+     *
+     * @param Request $request
+     * @return View
+     */
+    public function detail(Request $request):View
+    {
+        $tweets = new Tweet();
+        $tweet_id = $request->id;
+        $tweet = $tweets->detail($tweet_id);
+
+        return view('tweet.show', compact('tweet'));
+    }
 }

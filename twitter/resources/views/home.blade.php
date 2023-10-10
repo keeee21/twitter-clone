@@ -13,7 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <form method="get" action="{{ route('tweet.tweet') }}">
+                    <form method="get" action="{{ route('tweet') }}">
                         @csrf
                         <input type="submit" value="Tweet">
                     </form>
