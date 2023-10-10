@@ -49,11 +49,11 @@ class Tweet extends Model
     /**
      * ツイート詳細表示
      *
-     * @param int $id
+     * @param int $tweet_id
      * @return Tweet
      */
-    public function detail(int $id):Tweet
+    public function detail(int $tweet_id):Tweet
     {
-        return $this->with('user')->find($id);
+        return $this->with('user')->find($tweet_id);
     }
 }

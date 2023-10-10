@@ -58,8 +58,8 @@ class TweetController extends Controller
     public function detail(Request $request):View
     {
         $tweets = new Tweet();
-        $id = $request->id;
-        $tweet = $tweets->detail($id);
+        $tweet_id = $request->id;
+        $tweet = $tweets->detail($tweet_id);
 
         return view('tweet.show', compact('tweet'));
     }
