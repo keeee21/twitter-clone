@@ -35,4 +35,17 @@ class TweetController extends Controller
 
         return view('home');
     }
+
+    /**
+     * ツイート一覧表示
+     *
+     * @return View
+     */
+    public function index():View
+    {
+        $tweets = new Tweet();
+        $tweets = $tweets->index();
+        
+        return view('tweet.index',compact('tweets'));
+    }
 }

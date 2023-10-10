@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class Tweet extends Model
@@ -22,5 +24,25 @@ class Tweet extends Model
         $this->tweet = $tweet;
         $this->user_id = $user_id;
         $this->save();
+    }
+
+    /**
+     * Get the user that owns the Tweet
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * ツイート一覧の表示
+     *
+     * @return LengthAwarePaginator
+     */
+    public function index():LengthAwarePaginator
+    {
+        return $this->with('user')->paginate(5);
     }
 }
