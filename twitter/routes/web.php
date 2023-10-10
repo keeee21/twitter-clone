@@ -25,27 +25,27 @@ Route::get('/home', [HomeController::class, 'home'])->name('home');
 //ユーザー認証
 Route::group(['middleware' => 'auth'], function () {
     //ユーザー機能
-    Route::group(['prefix' => 'user','as' => 'user.'], function() {
+    Route::group(['prefix' => 'user','as' => 'user'], function() {
         //ユーザー詳細（プロフィール）表示
-        Route::get('detail/{id}', [UserController::class, 'detail'])->name('detail');
+        Route::get('detail/{id}', [UserController::class, 'detail'])->name('.detail');
         //編集ページ表示
-        Route::get('edit', [UserController::class, 'edit'])->name('edit');
+        Route::get('edit', [UserController::class, 'edit'])->name('.edit');
         //ユーザー情報編集
-        Route::put('update', [UserController::class, 'update'])->name('update');
+        Route::put('update', [UserController::class, 'update'])->name('.update');
         //ユーザー削除
-        Route::delete('delete',[UserController::class, 'delete'])->name('delete');
+        Route::delete('delete',[UserController::class, 'delete'])->name('.delete');
         //ユーザー一覧
-        Route::get('index', [UserController::class, 'index'])->name('index');
+        Route::get('index', [UserController::class, 'index'])->name('.index');
     });
     //ツイート機能
-    Route::group(['prefix' => 'tweet', 'as' => 'tweet.'], function(){
+    Route::group(['prefix' => 'tweet', 'as' => 'tweet'], function(){
         //ツイートページ表示
-        Route::get('/', [TweetController::class, 'tweet'])->name('tweet');
+        Route::get('/', [TweetController::class, 'tweet'])->name('');
         //ツイート投稿作成
-        Route::post('create', [TweetController::class, 'create'])->name('create');
+        Route::post('create', [TweetController::class, 'create'])->name('.create');
         //ツイートの一覧表示
-        Route::get('index', [TweetController::class, 'index'])->name('index');
+        Route::get('index', [TweetController::class, 'index'])->name('.index');
         //ツイート詳細表示
-        Route::get('detail', [TweetController::class, 'detail'])->name('detail');
+        Route::get('detail', [TweetController::class, 'detail'])->name('.detail');
     });
 });
