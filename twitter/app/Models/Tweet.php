@@ -17,7 +17,7 @@ class Tweet extends Model
      * @param int $user_id
      * @return void
      */
-    public function create(string $tweet, int $user_id)
+    public function create(string $tweet, int $user_id):void
     {
         $this->tweet = $tweet;
         $this->user_id = $user_id;

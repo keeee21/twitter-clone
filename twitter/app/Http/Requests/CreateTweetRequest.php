@@ -11,7 +11,7 @@ class CreateTweetRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize():bool
     {
         return $this->path() == 'tweet/create';
     }
@@ -21,7 +21,7 @@ class CreateTweetRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules():array
     {
         return [
             'tweet' => 'required|between:0,4000',
