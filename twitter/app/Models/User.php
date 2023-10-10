@@ -73,6 +73,17 @@ class User extends Authenticatable
         $user->email = $email;
         $user->save();
     }
+
+    /**
+     * ユーザー情報を削除
+     *
+     * @param int $id
+     * @return void
+     */
+    public function deleteByUserID(int $id):void
+    {
+        $this->destroy($id);
+    }
     
     /**
      * ユーザー一覧の表示
