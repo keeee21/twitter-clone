@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateTweetRequest extends FormRequest
+class UpdateTweetRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,11 +13,11 @@ class CreateTweetRequest extends FormRequest
      */
     public function authorize():bool
     {
-        return $this->path() == 'tweet/create';
+        return true;
     }
 
     /**
-     * ツイートにおけるバリデーション
+     * ツイート更新におけるバリデーション
      *
      * @return array
      */

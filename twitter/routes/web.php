@@ -48,10 +48,10 @@ Route::group(['middleware' => 'auth'], function () {
         //ツイートの一覧表示
         Route::get('index', [TweetController::class, 'index'])->name('.index');
         //ツイート詳細表示
-        Route::get('detail', [TweetController::class, 'detail'])->name('.detail');
+        Route::get('detail/{id}', [TweetController::class, 'detail'])->name('.detail');
         //ツイート編集ページ表示
-        Route::get('edit', [TweetController::class, 'edit'])->name('.edit');
+        Route::get('edit/{id}', [TweetController::class, 'edit'])->name('.edit');
         //ツイート編集
-        Route::put('update', [TweetController::class, 'update'])->name('.update');
+        Route::put('update/{id}', [TweetController::class, 'update'])->name('.update');
     });
 });

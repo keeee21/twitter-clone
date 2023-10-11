@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTweetRequest;
+use App\Http\Requests\UpdateTweetRequest;
 use App\Models\Tweet;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class TweetController extends Controller
@@ -24,16 +28,16 @@ class TweetController extends Controller
      * ツイート投稿作成機能
      *
      * @param CreateTweetRequest $request
-     * @return View
+     * @return RedirectResponse
      */
-    public function create(CreateTweetRequest $request):View
+    public function create(CreateTweetRequest $request):RedirectResponse
     {
         $tweets = new Tweet();
         $tweet = $request->tweet;
         $user_id = Auth::id();
         $tweets->create($tweet,$user_id);
 
-        return view('home');
+        return redirect('home');
     }
 
     /**
@@ -55,11 +59,10 @@ class TweetController extends Controller
      * @param Request $request
      * @return View
      */
-    public function detail(Request $request):View
+    public function detail(int $tweet_id):View
     {
         $tweets = new Tweet();
-        $id = $request->id;
-        $tweet = $tweets->detail($id);
+        $tweet = $tweets->detail($tweet_id);
 
         return view('tweet.show', compact('tweet'));
     }
@@ -67,17 +70,42 @@ class TweetController extends Controller
     /**
      * ツイート編集画面の表示
      *
-     * @return View
+     * @return View|RedirectResponse
      */
-    public function edit():View
+    public function edit(int $tweet_id):View|RedirectResponse
     {
-        
+        $tweets = new Tweet();
+        $tweet = $tweets->detail($tweet_id);
 
-        return view('tweet.edit');
+        if ($tweet->user_id == Auth::id()) {
+            return view('tweet.edit', compact('tweet'));
+        } else {
+            return redirect()->route('tweet.detail', $tweet_id)->with('message', '他のユーザーのツイートを編集できません！！！');
+        };
     }
 
-    public function update(CreateTweetRequest $request)
+    /**
+     * ツイート編集
+     *
+     * @param UpdateTweetRequest $request
+     * @return RedirectResponse
+     */
+    public function update(UpdateTweetRequest $request):RedirectResponse
     {
+        try {
+            DB::beginTransaction();
+            $tweets = new Tweet();
+            $tweet_id = $request->id;
+            $tweet = $request->tweet;
+            $tweet = $tweets->updateData($tweet_id, $tweet);
+            DB::commit();
 
+            return redirect()->route('tweet.detail', $tweet_id)->with('success', '更新しました！');
+        } catch(\Exception $e) {
+            DB::rollback();
+            Log::error($e);
+
+            return redirect()->route('tweet.detail', $tweet_id)->with('error', '更新中にエラーが発生しました！');
+        }
     }
 }
