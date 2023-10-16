@@ -102,9 +102,9 @@ class TweetController extends Controller
 
             return redirect()->route('tweet.detail', $tweet_id)->with('success', '更新しました！');
         } catch(\Exception $e) {
-            DB::rollback();
             Log::error($e);
-
+            DB::rollback();
+            
             return redirect()->route('tweet.detail', $tweet_id)->with('error', '更新中にエラーが発生しました！');
         }
     }
