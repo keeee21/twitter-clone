@@ -26,6 +26,12 @@
                                 <input type="submit" value="編集">
                             </form>
                         @endif
+                        @if ($tweet->user_id == Auth::id())
+                            <form method="post" action="{{ route('tweet.delete', $tweet->id) }}">
+                                @csrf
+                                <input type="submit" value="削除">
+                            </form>
+                        @endif
                         <form method="get" action="{{ route('tweet.index') }}">
                             <input type="submit" value="戻る">
                         </form>

@@ -108,4 +108,28 @@ class TweetController extends Controller
             return redirect()->route('tweet.detail', $tweet_id)->with('error', '更新中にエラーが発生しました！');
         }
     }
+
+    /**
+     * ツイートの削除
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function delete(Request $request):RedirectResponse
+    {
+        try {
+            DB::beginTransaction();
+            $tweet = new Tweet();
+            $tweet_id = $request->id;
+            $tweet->deleteByTweetId($tweet_id);
+            DB::commit();
+
+            return redirect()->route('tweet.index')->with('success', '削除しました！');
+        } catch(\Exception $e) {
+            Log::error($e);
+            DB::rollback();
+            
+            return redirect()->route('tweet.index')->with('error', '削除に失敗しました！');
+        }
+    }
 }

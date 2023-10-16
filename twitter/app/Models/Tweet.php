@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class Tweet extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     /**
      * ツイート投稿作成機能
@@ -71,5 +73,16 @@ class Tweet extends Model
         $data->update();
 
         return $data;
+    }
+
+    /**
+     * ツイート削除機能
+     *
+     * @param integer $tweet_id
+     * @return void
+     */
+    public function deleteByTweetId(int $tweet_id):void
+    {
+        Tweet::find($tweet_id)->delete();
     }
 }
