@@ -24,7 +24,7 @@ class CreateTweetRequest extends FormRequest
     public function rules():array
     {
         return [
-            'tweet' => 'required|between:0,200',
+            'tweet' => 'required|between:1,200',
         ];
     }
 
