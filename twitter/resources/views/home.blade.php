@@ -13,10 +13,7 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        <form method="get" action="{{ route('tweet') }}">
-                            @csrf
-                            <input type="submit" value="Tweet">
-                        </form>
+                        <button onclick="location.href='{{ route('tweet') }}'">ツイート</button>
                         <br>
                     </div>
                 </div>

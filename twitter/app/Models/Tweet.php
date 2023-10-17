@@ -61,15 +61,15 @@ class Tweet extends Model
      * ツイートを更新
      *
      * @param integer $tweet_id
-     * @param string $tweet
+     * @param string $tweet_text
      * @return Tweet
      */
-    public function updateData(int $tweet_id, string $tweet):Tweet
+    public function updateTweet(int $tweet_id, string $tweet_text):Tweet
     {
-        $data = Tweet::find($tweet_id);
-        $data->tweet = $tweet;
-        $data->update();
+        $tweet = Tweet::find($tweet_id);
+        $tweet->tweet = $tweet_text;
+        $tweet->update();
 
-        return $data;
+        return $tweet;
     }
 }

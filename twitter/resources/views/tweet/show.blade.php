@@ -22,13 +22,9 @@
                         <p class="card-text">{{ $tweet->user->name }}</p>
                         <p class="card-text">{{ $tweet->tweet }}</p>
                         @if ($tweet->user_id == Auth::id())
-                            <form method="get" action="{{ route('tweet.edit', $tweet->id) }}">
-                                <input type="submit" value="編集">
-                            </form>
+                            <button onclick="location.href='{{ route('tweet.edit', $tweet->id) }}'">編集</button>
                         @endif
-                        <form method="get" action="{{ route('tweet.index') }}">
-                            <input type="submit" value="戻る">
-                        </form>
+                        <button onclick="location.href='{{ route('tweet.index') }}'">戻る</button>
                     </div>
                 </div>
             </div>

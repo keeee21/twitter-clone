@@ -72,13 +72,14 @@ class TweetController extends Controller
      *
      * @return View|RedirectResponse
      */
-    public function edit(int $tweet_id):View|RedirectResponse
+    public function edit(int $tweet_id, Tweet $tweet):View|RedirectResponse
     {
-        $tweets = new Tweet();
-        $tweet = $tweets->detail($tweet_id);
+        $tweet_text = $tweet->detail($tweet_id);
+        $boolFlag = false;
+        if($tweet_text->user_id === Auth::id()) $boolFlag = true;
 
-        if ($tweet->user_id == Auth::id()) {
-            return view('tweet.edit', compact('tweet'));
+        if ($boolFlag) {
+            return view('tweet.edit', compact('tweet_text'));
         } else {
             return redirect()->route('tweet.detail', $tweet_id)->with('message', '他のユーザーのツイートを編集できません！！！');
         };
@@ -94,10 +95,10 @@ class TweetController extends Controller
     {
         try {
             DB::beginTransaction();
-            $tweets = new Tweet();
+            $tweet = new Tweet();
             $tweet_id = $request->id;
-            $tweet = $request->tweet;
-            $tweet = $tweets->updateData($tweet_id, $tweet);
+            $tweet_text = $request->tweet;
+            $tweet = $tweet->updateTweet($tweet_id, $tweet_text);
             DB::commit();
 
             return redirect()->route('tweet.detail', $tweet_id)->with('success', '更新しました！');
