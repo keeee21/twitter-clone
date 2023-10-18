@@ -33,11 +33,11 @@ class TweetController extends Controller
     public function create(CreateTweetRequest $request):RedirectResponse
     {
         $tweets = new Tweet();
-        $tweet = $request->tweet;
+        $tweet_text = $request->tweet;
         $user_id = Auth::id();
-        $tweets->create($tweet,$user_id);
+        $tweet = $tweets->create($tweet_text,$user_id);
 
-        return redirect('home');
+        return redirect('tweet/index');
     }
 
     /**
@@ -118,16 +118,13 @@ class TweetController extends Controller
     public function delete(Request $request):RedirectResponse
     {
         try {
-            DB::beginTransaction();
             $tweet = new Tweet();
             $tweet_id = $request->id;
             $tweet->deleteByTweetId($tweet_id);
-            DB::commit();
 
             return redirect()->route('tweet.index')->with('success', '削除しました！');
         } catch(\Exception $e) {
             Log::error($e);
-            DB::rollback();
             
             return redirect()->route('tweet.index')->with('error', '削除に失敗しました！');
         }

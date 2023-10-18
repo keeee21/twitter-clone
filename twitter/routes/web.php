@@ -54,6 +54,6 @@ Route::group(['middleware' => 'auth'], function () {
         //ツイート編集
         Route::put('update/{id}', [TweetController::class, 'update'])->name('.update');
         //ツイートの削除
-        Route::post('delete/{id}', [TweetController::class, 'delete'])->name('.delete');
+        Route::delete('delete/{id}', [TweetController::class, 'delete'])->name('.delete');
     });
 });
