@@ -59,10 +59,10 @@ class TweetController extends Controller
      * @param Request $request
      * @return View
      */
-    public function detail(int $tweet_id):View
+    public function detail(int $tweetId):View
     {
         $tweets = new Tweet();
-        $tweet = $tweets->detail($tweet_id);
+        $tweet = $tweets->detail($tweetId);
 
         return view('tweet.show', compact('tweet'));
     }
@@ -72,15 +72,14 @@ class TweetController extends Controller
      *
      * @return View|RedirectResponse
      */
-    public function edit(int $tweet_id):View|RedirectResponse
+    public function edit(int $tweetId, Tweet $tweet):View|RedirectResponse
     {
-        $tweets = new Tweet();
-        $tweet = $tweets->detail($tweet_id);
+        $tweetText = $tweet->detail($tweetId);
 
-        if ($tweet->user_id == Auth::id()) {
-            return view('tweet.edit', compact('tweet'));
+        if ($tweetText->user_id === Auth::id()) {
+            return view('tweet.edit', compact('tweetText'));
         } else {
-            return redirect()->route('tweet.detail', $tweet_id)->with('message', '他のユーザーのツイートを編集できません！！！');
+            return redirect()->route('tweet.detail', $tweetId)->with('message', '他のユーザーのツイートを編集できません！！！');
         };
     }
 
@@ -94,18 +93,18 @@ class TweetController extends Controller
     {
         try {
             DB::beginTransaction();
-            $tweets = new Tweet();
-            $tweet_id = $request->id;
-            $tweet = $request->tweet;
-            $tweet = $tweets->updateData($tweet_id, $tweet);
+            $tweet = new Tweet();
+            $tweetId = $request->id;
+            $tweetText = $request->tweet;
+            $tweet = $tweet->updateTweet($tweetId, $tweetText);
             DB::commit();
 
-            return redirect()->route('tweet.detail', $tweet_id)->with('success', '更新しました！');
+            return redirect()->route('tweet.detail', $tweetId)->with('success', '更新しました！');
         } catch(\Exception $e) {
             Log::error($e);
             DB::rollback();
             
-            return redirect()->route('tweet.detail', $tweet_id)->with('error', '更新中にエラーが発生しました！');
+            return redirect()->route('tweet.detail', $tweetId)->with('error', '更新中にエラーが発生しました！');
         }
     }
 
@@ -119,8 +118,8 @@ class TweetController extends Controller
     {
         try {
             $tweet = new Tweet();
-            $tweet_id = $request->id;
-            $tweet->deleteByTweetId($tweet_id);
+            $tweetId = $request->id;
+            $tweet->deleteByTweetId($tweetId);
 
             return redirect()->route('tweet.index')->with('success', '削除しました！');
         } catch(\Exception $e) {

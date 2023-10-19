@@ -31,9 +31,7 @@
                                 <input type="submit" value="削除">
                             </form>
                         @endif
-                        <form method="get" action="{{ route('tweet.index') }}">
-                            <input type="submit" value="戻る">
-                        </form>
+                        <button onclick="location.href='{{ route('tweet.index') }}'">戻る</button>
                     </div>
                 </div>
             </div>

@@ -6,20 +6,18 @@
             <div class="col-md-8">
                 <div class="card text-center">
                     <div class="card-body">
-                        <form method="post" action="{{ route('tweet.update',$tweet->id)}} ">
+                        <form method="post" action="{{ route('tweet.update',$tweetText->id)}} ">
                             @csrf
                             @method('put')
                             @error('tweet')
                                 <h5>{{ $message }}</h5>
                             @enderror
                             <div class="card-text">
-                                <textarea name="tweet" cols="70" rows="5" value="{{ old('tweet') ?? $tweet->tweet }}"></textarea>
+                                <textarea name="tweet" cols="70" rows="5" value="{{ old('tweet') ?? $tweetText->tweet }}"></textarea>
                             </div>
                             <input type="submit" value="保存">
                         </form>
-                        <form method="get" action="{{ route('tweet.detail',$tweet->id) }}">
-                            <input type="submit" value="戻る">
-                        </form>
+                        <button onclick="location.href='{{ route('tweet.index') }}'">戻る</button>
                     </div>
                 </div>
             </div>
