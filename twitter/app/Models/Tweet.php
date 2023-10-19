@@ -49,25 +49,25 @@ class Tweet extends Model
     /**
      * ツイート詳細表示
      *
-     * @param int $tweet_id
+     * @param int $tweetId
      * @return Tweet
      */
-    public function detail(int $tweet_id):Tweet
+    public function detail(int $tweetId):Tweet
     {
-        return $this->with('user')->find($tweet_id);
+        return $this->with('user')->find($tweetId);
     }
 
     /**
      * ツイートを更新
      *
-     * @param integer $tweet_id
-     * @param string $tweet_text
+     * @param integer $tweetId
+     * @param string $tweetText
      * @return Tweet
      */
-    public function updateTweet(int $tweet_id, string $tweet_text):Tweet
+    public function updateTweet(int $tweetId, string $tweetText):Tweet
     {
-        $tweet = Tweet::find($tweet_id);
-        $tweet->tweet = $tweet_text;
+        $tweet = Tweet::find($tweetId);
+        $tweet->tweet = $tweetText;
         $tweet->update();
 
         return $tweet;
