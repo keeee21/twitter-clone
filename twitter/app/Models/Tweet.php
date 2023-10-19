@@ -15,20 +15,6 @@ class Tweet extends Model
     use SoftDeletes;
 
     /**
-     * ツイート投稿作成機能
-     *
-     * @param string $tweetText
-     * @param int $userId
-     * @return void
-     */
-    public function create(string $tweetText, int $userId):void
-    {
-        $this->tweet = $tweetText;
-        $this->user_id = $userId;
-        $this->save();
-    }
-
-    /**
      * Get the user that owns the Tweet
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -36,6 +22,16 @@ class Tweet extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * ツイート投稿作成機能
+     *
+     * @return void
+     */
+    public function create():void
+    {
+        $this->save();
     }
 
     /**
@@ -62,27 +58,20 @@ class Tweet extends Model
     /**
      * ツイートを更新
      *
-     * @param integer $tweetId
-     * @param string $tweetText
-     * @return Tweet
+     * @return void
      */
-    public function updateTweet(int $tweetId, string $tweetText):Tweet
+    public function updateTweet():void
     {
-        $tweet = Tweet::find($tweetId);
-        $tweet->tweet = $tweetText;
         $tweet->update();
-
-        return $tweet;
     }
 
     /**
      * ツイート削除機能
      *
-     * @param integer $tweetId
      * @return void
      */
-    public function deleteByTweetId(int $tweetId):void
+    public function deleteByTweetId():void
     {
-        Tweet::find($tweetId)->delete();
+        $this->delete();
     }
 }

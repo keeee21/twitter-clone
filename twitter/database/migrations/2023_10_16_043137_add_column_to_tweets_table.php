@@ -14,7 +14,7 @@ return new class extends Migration
     public function up():void
     {
         Schema::table('tweets', function (Blueprint $table) {
-            $table->softDeletes($column = 'deleted_at', $precision = 0);
+            $table->softDeletes();
         });
     }
 

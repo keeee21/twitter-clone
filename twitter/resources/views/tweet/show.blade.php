@@ -22,8 +22,8 @@
                         <p class="card-text">{{ $tweet->user->name }}</p>
                         <p class="card-text">{{ $tweet->tweet }}</p>
                         @if ($tweet->user_id == Auth::id())
-                            <button onclick="location.href='{{ route('tweet.edit', $tweet->id) }}'">編集</button>
-                            <form method="post" action="{{ route('tweet.delete', $tweet->id) }}">
+                            <button onclick="location.href='{{ route('tweet.edit', $tweet) }}'">編集</button>
+                            <form method="post" action="{{ route('tweet.delete', $tweet) }}">
                                 @csrf
                                 @method('delete')
                                 <input type="submit" value="削除">
