@@ -90,13 +90,14 @@ class TweetController extends Controller
      * @param UpdateTweetRequest $request
      * @param Tweet $tweet
      * @return RedirectResponse
+     *  
      */
     public function update(UpdateTweetRequest $request, Tweet $tweet):RedirectResponse
     {
         try {
             $this->authorize('update',$tweet); 
             DB::beginTransaction();
-            $tweet->id = $request->id;
+            dd($request);
             $tweet->tweet = $request->tweet;
             $tweet->updateTweet();
             DB::commit();

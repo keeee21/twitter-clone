@@ -60,9 +60,9 @@ class Tweet extends Model
      *
      * @return void
      */
-    public function updateTweet():void
+    public function updateTweet()
     {
-        $tweet->update();
+        $this->update();
     }
 
     /**
