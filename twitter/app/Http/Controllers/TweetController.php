@@ -97,7 +97,6 @@ class TweetController extends Controller
         try {
             $this->authorize('update',$tweet); 
             DB::beginTransaction();
-            dd($request);
             $tweet->tweet = $request->tweet;
             $tweet->updateTweet();
             DB::commit();
