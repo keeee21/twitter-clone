@@ -17,14 +17,14 @@ class Tweet extends Model
     /**
      * ツイート投稿作成機能
      *
-     * @param string $tweet_text
-     * @param int $user_id
+     * @param string $tweetText
+     * @param int $userId
      * @return void
      */
-    public function create(string $tweet_text, int $user_id):void
+    public function create(string $tweetText, int $userId):void
     {
-        $this->tweet = $tweet_text;
-        $this->user_id = $user_id;
+        $this->tweet = $tweetText;
+        $this->user_id = $userId;
         $this->save();
     }
 
