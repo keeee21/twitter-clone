@@ -43,17 +43,33 @@ class Tweet extends Model
      */
     public function index():LengthAwarePaginator
     {
-        return $this->with('user')->paginate(5);
+        return $this->with('user')->orderBy('updated_at', 'desc')->paginate(6);
     }
     
     /**
      * ツイート詳細表示
      *
-     * @param int $tweet_id
+     * @param int $tweetId
      * @return Tweet
      */
-    public function detail(int $tweet_id):Tweet
+    public function detail(int $tweetId):Tweet
     {
-        return $this->with('user')->find($tweet_id);
+        return $this->with('user')->find($tweetId);
+    }
+
+    /**
+     * ツイートを更新
+     *
+     * @param integer $tweetId
+     * @param string $tweetText
+     * @return Tweet
+     */
+    public function updateTweet(int $tweetId, string $tweetText):Tweet
+    {
+        $tweet = Tweet::find($tweetId);
+        $tweet->tweet = $tweetText;
+        $tweet->update();
+
+        return $tweet;
     }
 }

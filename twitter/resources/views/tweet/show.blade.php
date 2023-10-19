@@ -6,12 +6,25 @@
             <div class="col-md-8">
                 <div class="card text-center">
                     <div class="card-body">
-                        <h5 class="card-title">ツイート詳細</h5>
-                        <p class="card-text">ユーザー名：{{ $tweet->user->name }}</p>
-                        <p class="card-text">ツイート内容：{{ $tweet->tweet }}</p>
-                        <form method="get" action="{{ route('tweet.index') }}">
-                            <input type="submit" value="戻る">
-                        </form>
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @elseif (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @elseif(session('message'))
+                            <div class="alert alert-danger">
+                                {{ session('message') }}
+                            </div>
+                        @endif
+                        <p class="card-text">{{ $tweet->user->name }}</p>
+                        <p class="card-text">{{ $tweet->tweet }}</p>
+                        @if ($tweet->user_id == Auth::id())
+                            <button onclick="location.href='{{ route('tweet.edit', $tweet->id) }}'">編集</button>
+                        @endif
+                        <button onclick="location.href='{{ route('tweet.index') }}'">戻る</button>
                     </div>
                 </div>
             </div>
