@@ -5,26 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class Tweet extends Model
 {
     use HasFactory;
-
-    /**
-     * ツイート投稿作成機能
-     *
-     * @param string $tweet
-     * @param int $user_id
-     * @return void
-     */
-    public function create(string $tweet, int $user_id):void
-    {
-        $this->tweet = $tweet;
-        $this->user_id = $user_id;
-        $this->save();
-    }
+    use SoftDeletes;
 
     /**
      * Get the user that owns the Tweet
@@ -34,6 +22,16 @@ class Tweet extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * ツイート投稿作成機能
+     *
+     * @return void
+     */
+    public function create():void
+    {
+        $this->save();
     }
 
     /**
@@ -60,16 +58,20 @@ class Tweet extends Model
     /**
      * ツイートを更新
      *
-     * @param integer $tweetId
-     * @param string $tweetText
-     * @return Tweet
+     * @return void
      */
-    public function updateTweet(int $tweetId, string $tweetText):Tweet
+    public function updateTweet():void
     {
-        $tweet = Tweet::find($tweetId);
-        $tweet->tweet = $tweetText;
-        $tweet->update();
+        $this->update();
+    }
 
-        return $tweet;
+    /**
+     * ツイート削除機能
+     *
+     * @return void
+     */
+    public function deleteByTweetId():void
+    {
+        $this->delete();
     }
 }

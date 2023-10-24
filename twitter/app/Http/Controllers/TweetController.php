@@ -28,16 +28,16 @@ class TweetController extends Controller
      * ツイート投稿作成機能
      *
      * @param CreateTweetRequest $request
+     * @param Tweet $tweet
      * @return RedirectResponse
      */
-    public function create(CreateTweetRequest $request):RedirectResponse
+    public function create(CreateTweetRequest $request, Tweet $tweet):RedirectResponse
     {
-        $tweets = new Tweet();
-        $tweet = $request->tweet;
-        $user_id = Auth::id();
-        $tweets->create($tweet,$user_id);
+        $tweet->tweet = $request->tweet;
+        $tweet->user_id = Auth::id();
+        $tweet->create();
 
-        return redirect('home');
+        return redirect()->route('tweet.index');
     }
 
     /**
@@ -56,13 +56,12 @@ class TweetController extends Controller
     /**
      * ツイート詳細表示
      *
-     * @param Request $request
+     * @param Tweet $tweet
      * @return View
      */
-    public function detail(int $tweetId):View
+    public function detail(Tweet $tweet):View
     {
-        $tweets = new Tweet();
-        $tweet = $tweets->detail($tweetId);
+        $tweet->detail($tweet->id);
 
         return view('tweet.show', compact('tweet'));
     }
@@ -70,16 +69,18 @@ class TweetController extends Controller
     /**
      * ツイート編集画面の表示
      *
+     * @param int $tweetId
+     * @param Tweet $tweet
      * @return View|RedirectResponse
      */
-    public function edit(int $tweetId, Tweet $tweet):View|RedirectResponse
+    public function edit(Tweet $tweet):View|RedirectResponse
     {
-        $tweetText = $tweet->detail($tweetId);
+        if (Auth::id() === $tweet->user_id) {
+            $tweet->detail($tweet->id);
 
-        if ($tweetText->user_id === Auth::id()) {
-            return view('tweet.edit', compact('tweetText'));
+            return view('tweet.edit', compact('tweet'));
         } else {
-            return redirect()->route('tweet.detail', $tweetId)->with('message', '他のユーザーのツイートを編集できません！！！');
+            return redirect()->route('tweet.detail', $tweet)->with('message', '他のユーザーのツイートを編集できません！！！');
         };
     }
 
@@ -87,24 +88,45 @@ class TweetController extends Controller
      * ツイート編集
      *
      * @param UpdateTweetRequest $request
+     * @param Tweet $tweet
      * @return RedirectResponse
+     *  
      */
-    public function update(UpdateTweetRequest $request):RedirectResponse
+    public function update(UpdateTweetRequest $request, Tweet $tweet):RedirectResponse
     {
         try {
+            $this->authorize('update',$tweet); 
             DB::beginTransaction();
-            $tweet = new Tweet();
-            $tweetId = $request->id;
-            $tweetText = $request->tweet;
-            $tweet = $tweet->updateTweet($tweetId, $tweetText);
+            $tweet->tweet = $request->tweet;
+            $tweet->updateTweet();
             DB::commit();
 
-            return redirect()->route('tweet.detail', $tweetId)->with('success', '更新しました！');
+            return redirect()->route('tweet.detail', $tweet)->with('success', '更新しました！');
         } catch(\Exception $e) {
             Log::error($e);
             DB::rollback();
             
-            return redirect()->route('tweet.detail', $tweetId)->with('error', '更新中にエラーが発生しました！');
+            return redirect()->route('tweet.detail', $tweet)->with('error', '更新中にエラーが発生しました！');
+        }
+    }
+
+    /**
+     * ツイートの削除
+     *
+     * @param Tweet $tweet
+     * @return RedirectResponse
+     */
+    public function delete(Tweet $tweet):RedirectResponse
+    {
+        try {
+            $this->authorize('delete',$tweet);
+            $tweet->deleteByTweetId();
+
+            return redirect()->route('tweet.index')->with('success', '削除しました！');
+        } catch(\Exception $e) {
+            Log::error($e);
+            
+            return redirect()->route('tweet.index')->with('error', '削除に失敗しました！');
         }
     }
 }
