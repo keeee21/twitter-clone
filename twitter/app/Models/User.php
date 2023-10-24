@@ -50,8 +50,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    //following_id -> ファローされた人、
-    //follower_id　ー＞　フォローした人
     /**
      * フォローデータ取得リレーション
      *
