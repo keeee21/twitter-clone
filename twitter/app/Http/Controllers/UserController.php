@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserEditRequest;
+use App\Models\Follower;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -78,5 +80,60 @@ class UserController extends Controller
         $users = $user->index();
         
         return view('user.index',compact('users'));
+    }
+
+    /**
+     * フォロー
+     *
+     * @param Follower $follower
+     * @param User $user
+     * @return RedirectResponse
+     */
+    public function follow(Follower $follower, User $user):RedirectResponse
+    {
+        try {
+            $follower->follower_id = Auth::id();
+            $bool = $user->isFollowing($user->id, Auth::id());
+            if (!$bool)
+            {
+                $follower->following_id = $user->id;
+                $follower->follow();
+            } else{
+                return redirect()->route('user.index')->with('already', '既にフォローしています');
+            }
+
+            return redirect()->route('user.index')->with('success', 'フォローしました！');
+        } catch(\Exception $e) {
+            Log::error($e);
+
+            return redirect()->route('user.index')->with('error', 'フォローに失敗しました！');
+        }
+    }
+
+    /**
+     * フォロー解除
+     *
+     * @param Follower $follower
+     * @param User $user
+     * @return void
+     */
+    public function unfollow(Follower $follower, User $user):RedirectResponse
+    {
+        try {
+            $bool = $user->isFollowing($user->id, Auth::id());
+            if ($bool)
+            {
+                $follower->unfollow($user->id, Auth::id());
+            } else{
+                return redirect()->route('user.index')->with('already', '既にフォロー解除しています');
+            }
+
+            return redirect()->route('user.index')->with('success', 'フォロー解除しました！');
+        } catch(\Exception $e) {
+            Log::error($e);
+
+            return redirect()->route('user.index')->with('error', 'フォロー解除に失敗しました！');
+        }
+
     }
 }

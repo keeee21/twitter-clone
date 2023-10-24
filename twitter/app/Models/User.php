@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Follower;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
@@ -47,6 +49,28 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //following_id -> ファローされた人、
+    //follower_id　ー＞　フォローした人
+    /**
+     * フォローデータ取得リレーション
+     *
+     * @return BelongsToMany
+     */
+    public function follows(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'followers', 'following_id', 'follower_id');
+    }
+
+    /**
+     * フォロワーデータ取得リレーション
+     *
+     * @return BelongsToMany
+     */
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(Follower::class, 'follower_id', 'following_id');
+    }
 
     /**
      * ユーザー詳細情報を取得
@@ -92,7 +116,19 @@ class User extends Authenticatable
      */
     public function index():LengthAwarePaginator
     {
-        return User::whereNull('deleted_at')->orderBy('id', 'asc')->paginate(5);
+        return $this->orderBy('id', 'asc')->paginate(5);
+    }
+
+    /**
+     * 既存フォローの確認
+     *
+     * @param integer $id
+     * @param integer $loginUserId
+     * @return boolean
+     */
+    public function isFollowing(int $id, int $loginUserId): bool
+    {
+        return Follower::where('following_id',$id)->where('follower_id', $loginUserId)->exists();
     }
 }  
 

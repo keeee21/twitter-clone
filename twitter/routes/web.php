@@ -48,4 +48,8 @@ Route::group(['middleware' => 'auth'], function () {
         //ツイート詳細表示
         Route::get('detail', [TweetController::class, 'detail'])->name('.detail');
     });
+    //フォロー
+    Route::post('follow/{user}', [UserController::class, 'follow'])->name('follow');
+    //フォロー解除
+    Route::delete('unfollow/{user}', [UserController::class, 'unfollow'])->name('unfollow');
 });
