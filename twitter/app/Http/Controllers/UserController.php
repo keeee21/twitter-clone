@@ -97,6 +97,7 @@ class UserController extends Controller
             if (!$bool)
             {
                 $follower->following_id = $user->id;
+                $this->authorize('follow',$follower);
                 $follower->follow();
             } else{
                 return redirect()->route('user.index')->with('already', '既にフォローしています');
@@ -134,6 +135,5 @@ class UserController extends Controller
 
             return redirect()->route('user.index')->with('error', 'フォロー解除に失敗しました！');
         }
-
     }
 }
