@@ -5,26 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class Tweet extends Model
 {
     use HasFactory;
-
-    /**
-     * ツイート投稿作成機能
-     *
-     * @param string $tweet
-     * @param int $user_id
-     * @return void
-     */
-    public function create(string $tweet, int $user_id):void
-    {
-        $this->tweet = $tweet;
-        $this->user_id = $user_id;
-        $this->save();
-    }
+    use SoftDeletes;
 
     /**
      * Get the user that owns the Tweet
@@ -37,23 +25,53 @@ class Tweet extends Model
     }
 
     /**
+     * ツイート投稿作成機能
+     *
+     * @return void
+     */
+    public function create():void
+    {
+        $this->save();
+    }
+
+    /**
      * ツイート一覧の表示
      *
      * @return LengthAwarePaginator
      */
     public function index():LengthAwarePaginator
     {
-        return $this->with('user')->paginate(5);
+        return $this->with('user')->orderBy('updated_at', 'desc')->paginate(6);
     }
     
     /**
      * ツイート詳細表示
      *
-     * @param int $tweet_id
+     * @param int $tweetId
      * @return Tweet
      */
-    public function detail(int $tweet_id):Tweet
+    public function detail(int $tweetId):Tweet
     {
-        return $this->with('user')->find($tweet_id);
+        return $this->with('user')->find($tweetId);
+    }
+
+    /**
+     * ツイートを更新
+     *
+     * @return void
+     */
+    public function updateTweet():void
+    {
+        $this->update();
+    }
+
+    /**
+     * ツイート削除機能
+     *
+     * @return void
+     */
+    public function deleteByTweetId():void
+    {
+        $this->delete();
     }
 }

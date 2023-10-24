@@ -19,10 +19,7 @@
                             <p class="card-text">メール：<input type="email" name="email" value="{{ $user->email }}" ></p>
                             <input type="submit" value="保存">
                         </form>
-                        <form method="get" action="{{ route('user.detail',['id' => Auth::id()]) }}">
-                            @csrf
-                            <input type="submit" value="キャンセル">
-                        </form>
+                        <button onclick="location.href='{{ route('user.detail',['id' => Auth::id()]) }}'">戻る</button>
                     </div>
                 </div>
             </div>
